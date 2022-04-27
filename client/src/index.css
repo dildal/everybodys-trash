@@ -7,16 +7,76 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-.map-container {
-  height: 100%;
-  width: 100%;
-}
-
 .App{
   height: 100vh;
+  display: flex;
+}
+
+.map-container {
+  height: 100%;
+  width: 60%;
+}
+
+/* ===============================
+HomePage List styles
+=============================== */
+
+.trash-list-container{
+  width: 40%;
+  border-left: 5px solid;
+  background: #535E4B;
+  overflow: scroll;
+}
+
+.trash-list-item {
+  display: flex;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid white;
+  width: 80%;
+  margin: 0 auto 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.trash-list-item-name h3{
+  text-transform: uppercase;
+  font-weight: normal;
+  color: white;
+  text-align: center;
+  /* margin-right: 5px; */
+}
+
+.trash-list-item-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 130px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid white;
+}
+
+.trash-list-item-info {
+  color: white;
+  line-height: 1.3rem;
+  font-weight: 300;
+  flex-grow: 1;
+}
+
+.trash-list-distance{
+  margin-top: 5px;
+  text-align: right;
 }
