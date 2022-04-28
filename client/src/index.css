@@ -7,10 +7,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+input, textarea, select {
+  color: black;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  text-decoration: none;
+  color: white
 }
 
 code {
@@ -26,6 +32,17 @@ code {
 .map-container {
   height: 100%;
   width: 60%;
+  position: relative;
+}
+
+.toggle-trash-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #efe0d8;
+  border: 2px solid white;
+  padding: 10px;
+  cursor: pointer;
 }
 
 /* ===============================
@@ -37,6 +54,7 @@ HomePage List styles
   border-left: 5px solid;
   background: #535E4B;
   overflow: scroll;
+  padding-top: 1rem;
 }
 
 .trash-list-item {
@@ -47,6 +65,7 @@ HomePage List styles
   width: 80%;
   margin: 0 auto 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
 }
 
 .trash-list-item-name h3{
@@ -79,4 +98,150 @@ HomePage List styles
 .trash-list-distance{
   margin-top: 5px;
   text-align: right;
+}
+
+/* ================================================
+Add trash form style
+================================================ */
+.trash-form-container{
+  width: 80%;
+  position: absolute;
+  margin: 0 auto;
+  z-index: 10;
+  background: rgba(0,0,0,0.7);
+  left: 10%;
+  height: 80%;
+  top: 10%;
+  border-radius: 13px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.trash-form-container form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  padding: 12px;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.input-container{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-self: center;
+}
+
+.tags-section{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-self: center;
+}
+
+.trash-form-container form label {
+  align-self: flex-start;
+  margin-bottom: 8px;
+}
+
+.trash-form-container form input {
+  line-height: 22px;
+  border-radius: 4px;
+  border: none;
+  padding: 2px;
+}
+
+.trash-form-container form textarea {
+  line-height: 22px;
+  border-radius: 4px;
+  border: none;
+  padding: 2px;
+}
+
+.trash-form-container form select {
+  line-height: 22px;
+  border-radius: 4px;
+  border: none;
+  padding: 2px;
+}
+
+.form-close {
+  border: none;
+  background: rgba(0,0,0,0);
+  align-self: flex-end;
+  margin-right: 16px;
+  margin-top: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;  
+}
+
+/* ==================================
+Trash Detail Card style
+================================== */
+#trash-detail {
+  display: flex;
+  flex-direction: column;
+  /* padding: 10px; */
+  border: 1px solid white;
+  width: 80%;
+  margin: 0 auto 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+}
+
+#trash-detail header {
+  padding: 10px;
+}
+
+#trash-detail body {
+  padding: 10px;
+}
+
+#trash-detail body > *{
+  padding: 10px 0;
+}
+
+#trash-detail header{
+  display: flex;
+  justify-content: space-between;
+}
+
+#trash-detail header button{
+    justify-self: flex-end;
+    background: #efe0d8;
+    border: none;
+    padding: 1px 17px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+}
+
+#trash-detail img {
+  width: 100%;
+  max-height: 400px;
+  padding: 0;
+}
+
+#trash-detail body button{
+  background: #efe0d8;
+    border: none;
+    cursor: pointer;
+    color: black;
+    font-weight: normal;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 80%;
+    align-self: center;
+}
+
+/* =====================
+Pop up styles
+===================== */
+.popup *{
+  color: black;
 }
