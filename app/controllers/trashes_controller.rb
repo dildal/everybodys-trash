@@ -1,6 +1,8 @@
 class TrashesController < ApplicationController
-rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+    skip_before_action :authorized, only: [:index, :create, :destroy]
+    rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+    rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+    
     def index
         render json: Trash.all, status: :ok
     end

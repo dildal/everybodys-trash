@@ -16,7 +16,7 @@ input, textarea, select {
   padding: 0;
   margin: 0;
   text-decoration: none;
-  color: white
+  color: black
 }
 
 code {
@@ -24,7 +24,7 @@ code {
     monospace;
 }
 
-.App{
+.home-page{
   height: 100vh;
   display: flex;
 }
@@ -40,9 +40,67 @@ code {
   top: 10px;
   right: 10px;
   background: #efe0d8;
-  border: 2px solid white;
+  border: 2px solid black;
   padding: 10px;
   cursor: pointer;
+}
+
+/* =========================
+Header styles
+========================= */
+header {
+  color: black;
+  display: flex;
+  width: 100%;
+  background: #EFE0D8;
+  padding: 8px;
+  border-bottom: solid 2px #41403E;
+  justify-content: space-between;
+  box-shadow: 20px 38px 34px -26px hsla(0,0%,0%,.2);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.header-right {
+  align-self: center;
+  padding: 10px;
+  display: flex;
+}
+
+.header-right a {
+  color: #444;
+  margin-right: 10px;
+  /* text-transform: uppercase; */
+  font-weight: 400;
+}
+
+.header-right p{
+  margin-right: 10px;
+}
+
+.header-links a:hover{
+  text-decoration: underline;
+}
+
+.button-link{
+  color: #444;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button-link:hover{
+  color: black;
+}
+
+.big-header-link {
+  align-self: center;
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: lightcoral;
+
 }
 
 /* ===============================
@@ -52,7 +110,7 @@ HomePage List styles
 .trash-list-container{
   width: 40%;
   border-left: 5px solid;
-  background: #535E4B;
+  background: #EFE0D8;
   overflow: scroll;
   padding-top: 1rem;
 }
@@ -71,9 +129,7 @@ HomePage List styles
 .trash-list-item-name h3{
   text-transform: uppercase;
   font-weight: normal;
-  color: white;
   text-align: center;
-  /* margin-right: 5px; */
 }
 
 .trash-list-item-name {
@@ -85,11 +141,10 @@ HomePage List styles
   flex-shrink: 0;
   padding-right: 10px;
   margin-right: 10px;
-  border-right: 1px solid white;
+  border-right: 1px solid black;
 }
 
 .trash-list-item-info {
-  color: white;
   line-height: 1.3rem;
   font-weight: 300;
   flex-grow: 1;
@@ -118,7 +173,7 @@ Add trash form style
   flex-direction: column;
 }
 
-.trash-form-container form{
+form{
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -244,4 +299,13 @@ Pop up styles
 ===================== */
 .popup *{
   color: black;
+}
+
+/*======================
+Bulletin Board and Posts styles
+======================== */
+.bulletin-post {
+  width: 80%;
+  margin: 20px auto;
+  text-align: left;
 }
