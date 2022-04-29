@@ -18,8 +18,29 @@ export default function BulletinBoard({currentUser}) {
     })
   }, [])
 
+  function handleDelete(id){
+      fetch(`posts/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json'}
+      })
+      .then(res => {
+          if(res.ok){
+              setPosts(posts.filter(post => post.id !== id))
+              //add modal saying post was deleted
+          } else{
+              console.log('error while deleting post');
+          }
+    })
+  }
+
   const postsToRender = posts.map(post => {
-      return <BulletinPost post={post} key={post.id} />
+      return (
+        <BulletinPost post={post} 
+            key={post.id} 
+            isEditable={currentUser && currentUser.id === post.user.id}
+            handleDelete={handleDelete}
+        />
+    )
   })
   
   return (

@@ -11,6 +11,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
 import NewPostForm from './components/NewPostForm';
+import EditPostForm from './components/EditPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -39,7 +40,11 @@ function App() {
     fetch('/auth')
       .then(res => res.json())
       .then(data => {
-        setCurrentUser(data)
+        if(data.errors){
+          console.log(data.errors)
+        }else{
+          setCurrentUser(data)
+        }
       })
   }, [])
 
@@ -144,6 +149,9 @@ function App() {
         </Route>
         <Route exact path='/posts/new'>
           <NewPostForm currentUser={currentUser}/>
+        </Route>
+        <Route exact path='/posts/:postId/edit'>
+          <EditPostForm />
         </Route>
         <Route exact path='/'>
           <div className='home-page'>
