@@ -5,6 +5,12 @@ import Map, {Marker, Source, Layer, Popup} from 'react-map-gl';
 import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
+import Header from './components/Header';
+import { Switch, Route } from 'react-router-dom';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import BulletinBoard from './components/BulletinBoard';
+import NewPostForm from './components/NewPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -18,6 +24,7 @@ function App() {
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(['trash-data', 'road-street', 'road-primary', 'road-secondary-tertiary', 'land'])
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
+  const [currentUser, setCurrentUser] = useState()
 
 
 
@@ -26,6 +33,14 @@ function App() {
       console.log('getting current location')
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
     })
+  }, [])
+
+  useEffect(() => {
+    fetch('/auth')
+      .then(res => res.json())
+      .then(data => {
+        setCurrentUser(data)
+      })
   }, [])
 
   useEffect(() => {
@@ -116,67 +131,87 @@ function App() {
 
   return (
     <div className="App">
-      <div className='map-container'>
-        {openTrashForm && 
-          <NewTrashForm 
-            {...newTrashCoords}
-            setOpenTrashForm={setOpenTrashForm}
-            currentLocation={currentLocation}
-            handleAddTrash={handleAddTrash}
-            interactiveLayerIds={interactiveLayerIds}
-            setInteractiveLayerIds={setInteractiveLayerIds}
-            setAddTrash={setAddTrash}
-          />
-        }
-        <Map
-          initialViewState={{
-            latitude: 39.9525839,
-            longitude: -75.1652215,
-            zoom: 12.5
-          }}
-          mapStyle="mapbox://styles/mddally/ck91ip5tc0s2f1iqipugocf9q"
-          mapboxAccessToken='pk.eyJ1IjoibWRkYWxseSIsImEiOiJjazh5bnh3aGkxa2RkM2Zudm9nY2RmNDQ3In0.D3nJ_3OesFjpqAX3l8neYA'
-          interactiveLayerIds={interactiveLayerIds}
-          cursor={cursor}
-          onMouseEnter={e => onMouseEnter(e)}
-          onMouseLeave={e => onMouseLeave(e)}
-          onClick={(e) => handleClick(e) }
-        >
-            <button 
-              className="toggle-trash-button"
-              onClick={() => {
-                setCursor('pointer')
-                setAddTrash(true)
-                setInteractiveLayerIds(interactiveLayerIds.filter(lay => lay !== 'trash-data'))
-            }}
-            >
-              Add Trash
-            </button>
-          <Source id="trash-data" type="geojson" data={{type: 'FeatureCollection', features: geoJSON}}>
-            <Layer {...layerStyle} />
-            {popupInfo && (
-            <Popup
-              anchor="top"
-              longitude={Number(popupInfo.longitude)}
-              latitude={Number(popupInfo.latitude)}
-              onClose={() => setPopupInfo(null)}
-              closeOnClick={false}
-            >
-              <div className='popup'>
-                <h3>{popupInfo.title}</h3>
-              </div>
-              <img width="100%" src={popupInfo.picture} />
-            </Popup>
-          )}
-          </Source>
-          <Marker longitude={currentLocation[0]} latitude={currentLocation[1]} anchor="bottom" style={{height:'20px', width: '20px'}}/>
-        </Map>
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+      <Switch>
+        <Route exact path='/login'>
+          <Login setCurrentUser={setCurrentUser}/>
+        </Route>
+        <Route exact path='/signup'>
+          <Signup setCurrentUser={setCurrentUser}/>
+        </Route>
+        <Route exact path='/bulletin'>
+          <BulletinBoard currentUser={currentUser}/>
+        </Route>
+        <Route exact path='/posts/new'>
+          <NewPostForm currentUser={currentUser}/>
+        </Route>
+        <Route exact path='/'>
+          <div className='home-page'>
+            <div className='map-container'>
+              {openTrashForm && 
+                <NewTrashForm 
+                  {...newTrashCoords}
+                  setOpenTrashForm={setOpenTrashForm}
+                  currentLocation={currentLocation}
+                  handleAddTrash={handleAddTrash}
+                  interactiveLayerIds={interactiveLayerIds}
+                  setInteractiveLayerIds={setInteractiveLayerIds}
+                  setAddTrash={setAddTrash}
+                />
+              }
+              <Map
+                initialViewState={{
+                  latitude: 39.9525839,
+                  longitude: -75.1652215,
+                  zoom: 12.5
+                }}
+                mapStyle="mapbox://styles/mddally/ck91ip5tc0s2f1iqipugocf9q"
+                mapboxAccessToken='pk.eyJ1IjoibWRkYWxseSIsImEiOiJjazh5bnh3aGkxa2RkM2Zudm9nY2RmNDQ3In0.D3nJ_3OesFjpqAX3l8neYA'
+                interactiveLayerIds={interactiveLayerIds}
+                cursor={cursor}
+                onMouseEnter={e => onMouseEnter(e)}
+                onMouseLeave={e => onMouseLeave(e)}
+                onClick={(e) => handleClick(e) }
+              >
+                  <button 
+                    className="toggle-trash-button"
+                    onClick={() => {
+                      setCursor('pointer')
+                      setAddTrash(true)
+                      setInteractiveLayerIds(interactiveLayerIds.filter(lay => lay !== 'trash-data'))
+                  }}
+                  >
+                    Add Trash
+                  </button>
+                <Source id="trash-data" type="geojson" data={{type: 'FeatureCollection', features: geoJSON}}>
+                  <Layer {...layerStyle} />
+                  {popupInfo && (
+                  <Popup
+                    anchor="top"
+                    longitude={Number(popupInfo.longitude)}
+                    latitude={Number(popupInfo.latitude)}
+                    onClose={() => setPopupInfo(null)}
+                    closeOnClick={false}
+                  >
+                    <div className='popup'>
+                      <h3>{popupInfo.title}</h3>
+                    </div>
+                    <img width="100%" src={popupInfo.picture} />
+                  </Popup>
+                )}
+                </Source>
+                <Marker longitude={currentLocation[0]} latitude={currentLocation[1]} anchor="bottom" style={{height:'20px', width: '20px'}}/>
+              </Map>
+            </div>
+            <TrashList 
+              trash={trash}
+              handleRemoveTrash={handleRemoveTrash}
+            /> 
+          </div>
+        </Route>
+      </Switch>
       </div>
-      <TrashList 
-        trash={trash}
-        handleRemoveTrash={handleRemoveTrash}
-      /> 
-    </div>
+      
   );
 }
 
