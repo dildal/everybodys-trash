@@ -19,7 +19,7 @@ export default function BulletinBoard({currentUser}) {
   }, [])
 
   const postsToRender = posts.map(post => {
-      return <BulletinPost post={post} key={post.id} />
+      return <BulletinPost post={post} key={post.id} isEditable={currentUser && currentUser.id === post.user.id}/>
   })
   
   return (
