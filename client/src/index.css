@@ -308,4 +308,5 @@ Bulletin Board and Posts styles
   width: 80%;
   margin: 20px auto;
   text-align: left;
+  cursor: pointer;
 }

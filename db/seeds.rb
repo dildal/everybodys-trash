@@ -14,7 +14,11 @@ Trash.create([{longitude: -75.160834,latitude: 39.931790, picture: "https://unsp
 ])
 
 user = User.create({username: 'donny', password: 'donny', password_confirmation: 'donny', first_name: 'Donny', last_name: "Normal", city: 'philadelphia'})
+user2 = User.create({username: 'user', password: 'password', password_confirmation: 'password', first_name: 'User', last_name: 'Name', city: 'philadelphia'})
 
-Post.create({title: "I need jars", body: "Hey y'all I'm getting married tomorrow and i need mason jars to hold the flowers on ppl's tables. I only need like 500", user: user, is_request: true})
+post1 = Post.create({title: "I need jars", body: "Hey y'all I'm getting married tomorrow and i need mason jars to hold the flowers on ppl's tables. I only need like 500", user: user, is_request: true})
 Post.create({title: "I need flowers", body: "Hey y'all I'm getting married tomorrow and i need flowers to put into the mason jars on ppl's tables. I only need like 10,000", user: user, is_request: true})
 Post.create({title: "I have a ton of jars", body: "Hey y'all I called off my wedding and now I have all these mason jars sitting around.  If anyone wants them they're all yours.", user: user, is_request: false})
+Post.create({title: 'Hunting for Z\'s', body: 'Looking for some z\'s anybody have some they can spare?', user: user2, is_request: true})
+
+Comment.create({body: 'I have 2 jars you can have.  Good luck with the other 498', user: user2, post: post1})

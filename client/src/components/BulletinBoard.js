@@ -5,6 +5,7 @@ import BulletinPost from './BulletinPost';
 export default function BulletinBoard({currentUser}) {
   
   const [posts, setPosts] = useState([]);
+  const [detailID, setDetailID] = useState();
 
   useEffect(() => {
     fetch('/posts')
@@ -39,6 +40,9 @@ export default function BulletinBoard({currentUser}) {
             key={post.id} 
             isEditable={currentUser && currentUser.id === post.user.id}
             handleDelete={handleDelete}
+            isDetailed={detailID === post.id}
+            setDetailID={setDetailID}
+            currentUser={currentUser}
         />
     )
   })
