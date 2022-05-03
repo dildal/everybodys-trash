@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Comment({comment, currentUser, handleEditComment, handleDeleteComment}) {
   const [toggleEditForm, setToggleEditForm] = useState(false)
   const [editComment, setEditComment] = useState(comment)
+  const location = useLocation();
 
   function handleSubmit(e){
     e.preventDefault()
@@ -37,6 +39,15 @@ export default function Comment({comment, currentUser, handleEditComment, handle
   return (
     <div className='comment-container'>
       <h4>{comment.user.username}</h4>
+      {
+      currentUser.id !== comment.user.id &&
+        <Link to={{
+        pathname: `/messages/${comment.user.id}`,
+        state: {modal: location}
+        }}>
+          Chat
+        </Link>
+      }
       {toggleEditForm ? 
       <form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="comment">

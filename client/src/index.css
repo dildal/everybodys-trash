@@ -310,3 +310,18 @@ Bulletin Board and Posts styles
   text-align: left;
   cursor: pointer;
 }
+
+/* 
+======================
+Chat pop-up
+====================== 
+*/
+
+.pop-up{
+  position: absolute;
+  bottom: 0;
+  right: 60px;
+  z-index: 5;
+  height: 200px;
+  border: 1px solid black;
+}

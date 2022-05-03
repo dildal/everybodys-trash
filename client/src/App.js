@@ -6,7 +6,7 @@ import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
 import Header from './components/Header';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
@@ -14,6 +14,7 @@ import NewPostForm from './components/NewPostForm';
 import EditPostForm from './components/EditPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ChatModal from './components/ChatModal';
 
 function App() {
   const [trash, setTrash] = useState([]);
@@ -25,7 +26,12 @@ function App() {
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(['trash-data', 'road-street', 'road-primary', 'road-secondary-tertiary', 'land'])
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
-  const [currentUser, setCurrentUser] = useState()
+  const [currentUser, setCurrentUser] = useState();
+  const location = useLocation();
+  
+  const modal = location.state && location.state.modal
+  console.log(modal)
+
 
 
 
@@ -137,23 +143,23 @@ function App() {
   return (
     <div className="App">
       <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <Switch>
+      <Switch location={modal || location}>
         <Route exact path='/login'>
           <Login setCurrentUser={setCurrentUser}/>
         </Route>
         <Route exact path='/signup'>
           <Signup setCurrentUser={setCurrentUser}/>
         </Route>
-        <Route exact path='/bulletin'>
+        <Route  path='/bulletin'>
           <BulletinBoard currentUser={currentUser}/>
         </Route>
-        <Route exact path='/posts/new'>
+        <Route  path='/posts/new'>
           <NewPostForm currentUser={currentUser}/>
         </Route>
-        <Route exact path='/posts/:postId/edit'>
+        <Route  path='/posts/:postId/edit'>
           <EditPostForm />
         </Route>
-        <Route exact path='/'>
+        <Route  path='/'>
           <div className='home-page'>
             <div className='map-container'>
               {openTrashForm && 
@@ -218,6 +224,12 @@ function App() {
           </div>
         </Route>
       </Switch>
+      {
+        modal && 
+        <Route path='/messages/:receiver_id'>
+          <ChatModal currentUser={currentUser} />
+        </Route>
+      }
       </div>
       
   );
