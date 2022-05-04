@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_03_141026) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_04_182439) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_03_141026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "chat_id"
+    t.boolean "read"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -41,6 +42,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_03_141026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "text"
+    t.bigint "trash_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trash_id"], name: "index_tags_on_trash_id"
   end
 
   create_table "trashes", force: :cascade do |t|
@@ -68,4 +77,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_03_141026) do
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
+  add_foreign_key "tags", "trashes"
 end

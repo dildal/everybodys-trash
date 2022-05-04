@@ -25,16 +25,22 @@ export default function ChatModal({currentUser, cableApp}) {
               console.log("whoops")
           }
     })
-    const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel", chat_id: chatID}, {
+    // const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel", chat_id: chatID}, {
+    //     received: (message) => handleReceivedMessage(message)
+    // })
+    const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
         received: (message) => handleReceivedMessage(message)
     })
+
     setMessage({...message, sender_id: currentUser.id})
     return () => channel.unsubscribe()
   }, [])
 
   function handleReceivedMessage(message){
       console.log(message)
-      setMessages(messages => [...messages, message])
+      if(currentUser.id === message.receiver_id || currentUser.id === message.sender_id){
+        setMessages(messages => [...messages, message])
+      }
   }
 
   function handleSubmit(e){
@@ -48,6 +54,7 @@ export default function ChatModal({currentUser, cableApp}) {
        if(!res.ok){
            console.log("ERROR!")
        }
+       setMessage({...message, text: ''})
     })
     
   }

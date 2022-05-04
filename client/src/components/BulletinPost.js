@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import CommentForm from './CommentForm';
 import Comment from './Comment';
@@ -6,6 +6,8 @@ import Comment from './Comment';
 export default function BulletinPost({post, isEditable, handleDelete, setDetailID, isDetailed, currentUser}) {
   const giveClass = post.is_request ? '' : 'giving-away'
   const [comments, setComments] = useState(post.comments);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hideCommentForm, setHideCommentForm] = useState(false)
 
   const location = useLocation();
 
@@ -25,12 +27,18 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
 
 
   const renderComments = comments.map(comment => {
-      return <Comment comment={comment} currentUser={currentUser} handleDeleteComment={handleDeleteComment} handleEditComment={handleEditComment}/>
+      return <Comment 
+        comment={comment} 
+        currentUser={currentUser} 
+        handleDeleteComment={handleDeleteComment} 
+        handleEditComment={handleEditComment}
+        setHideCommentForm={setHideCommentForm}
+    />
   })
   return (
     <div className={`bulletin-post ${giveClass}`} onClick={() => setDetailID(post.id)}>
         <p className='post-user'>{post.user.username} 
-        {currentUser.id !== post.user.id && <Link onClick={e => e.stopPropagation()} to={{
+        {(currentUser && currentUser.id !== post.user.id )&& <Link onClick={e => e.stopPropagation()} to={{
         pathname: `/messages/${post.user.id}`,
         state: {modal: location}
         }}>
@@ -42,7 +50,7 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
             <div className='detailed-post'>
                 <p className='post-body'>{post.body}</p>
                 {renderComments}
-                {currentUser && <CommentForm post={post} currentUser={currentUser} handleAddComment={handleAddComment}/>}
+                {(currentUser && !hideCommentForm) && <CommentForm post={post} currentUser={currentUser} handleAddComment={handleAddComment}/>}
             </div>
         }
         {isEditable && 
@@ -52,5 +60,6 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
             </div>
         }
     </div>
+    
   )
 }

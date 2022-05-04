@@ -252,11 +252,11 @@ Trash Detail Card style
   padding: 10px;
 }
 
-#trash-detail body {
+#trash-detail main {
   padding: 10px;
 }
 
-#trash-detail body > *{
+#trash-detail main > *{
   padding: 10px 0;
 }
 
@@ -281,17 +281,17 @@ Trash Detail Card style
   padding: 0;
 }
 
-#trash-detail body button{
-  background: #efe0d8;
-    border: none;
-    cursor: pointer;
-    color: black;
-    font-weight: normal;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    width: 80%;
-    align-self: center;
+#trash-detail>main>button{
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
+  font-weight: normal;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  align-self: center;
+  background: #3a4664;
+  padding: 10px;
 }
 
 /* =====================
@@ -322,19 +322,22 @@ Chat pop-up
   bottom: 0;
   right: 60px;
   z-index: 5;
-  height: 200px;
+  height: 350px;
   border: 1px solid black;
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  width: 310px;
+  border-bottom: 20px solid black;
 }
 
 .chat-message{
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   padding: 10px;
+  border-bottom: 1px solid black;
 }
 
 .message-username{
@@ -359,3 +362,51 @@ Chat pop-up
 .chat-message.message-received {
   text-align: left;
 }
+
+/* ================================
+Tags
+================================ */
+
+.tag{
+  border-radius: 10px;
+  padding: 2px 12px;
+  margin: auto;
+  margin: 2px;
+  background: #21B20C;
+}
+
+.tag:nth-child(2n){
+  background: #FF7F50;
+}
+
+.tag:nth-child(3n){
+  background: #17DEEE;
+}
+
+.tag:nth-child(4n){
+  background: #FF4162;
+}
+
+.tag-container{
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.tag-button {
+  margin-right: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+
+
+/* #3a4664
+#eaa0a2
+#ffdbdc
+#ffffff
+#aaa */

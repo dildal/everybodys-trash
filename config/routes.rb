@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tags
   resources :messages, only: [:show, :create]
   resources :comments, only: [:create, :update, :destroy]
   resources :posts
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   get "/auth", to: "users#show"
   delete "/logout", to: "sessions#destroy"
   get '/receiver/:id', to: "users#get_receiver"
+  get '/unread_messages/:id', to: "messages#unread"
 
   mount ActionCable.server => '/cable'
 

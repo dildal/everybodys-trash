@@ -9,6 +9,8 @@ class TrashesController < ApplicationController
 
     def create
         trash = Trash.create!(trash_params)
+        byebug
+        params[:tags].each { |tag| Tag.create!({text: tag, trash: trash}) }
         render json: trash, status: :created
     end
 
@@ -21,7 +23,7 @@ class TrashesController < ApplicationController
     private
 
     def trash_params
-        params.permit(:title, :description, :picture, :longitude, :latitude, :isHeavy, :category)
+        params.permit(:title, :description, :picture, :longitude, :latitude, :isHeavy, :category, )
     end
 
     def record_invalid(invalid)

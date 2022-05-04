@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {distance} from '@turf/turf';
+import Tag from './Tag';
 
 
 export default function NewTrashForm({
@@ -19,22 +20,23 @@ export default function NewTrashForm({
     isHeavy: '',
     latitude: latitude,
     longitude: longitude,
-    description: ''
+    description: '',
+    tags: []
   }
 
   const [newTrash, setNewTrash] = useState(trashInit)
 
-  const [tag, setTag] = useState('');
+  const [newTag, setNewTag] = useState('');
   const [tags, setTags] = useState([])
 
-  function handleTagAdd() {
-    console.log('in handle tag add')
-    setTags([...tags, tag]);
-    setTag('');
-  }
-
-  function handleEnterPressInTagForm(e){
-      console.log(e.key)
+  function handleTagAdd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if(!tags.some(t => t === newTag)){
+        setTags([...tags, newTag]);
+    }
+    setNewTrash(newTrash => ({...newTrash, tags}))
+    setNewTag('');
   }
 
   function handleExit() {
@@ -66,6 +68,14 @@ export default function NewTrashForm({
         }
       })
   }
+
+  function removeTag(tag){
+      setTags(tags.filter(t => t !== tag));
+  }
+
+  const renderTags = tags.map((tag, i) => {
+     return <Tag tag={tag} key={i} removeTag={removeTag}/>
+  })
 
   return (
     <div className='trash-form-container'>
@@ -146,11 +156,13 @@ export default function NewTrashForm({
                     type='text'
                     id='tags'
                     name='tags'
-                    onChange={e => setTag(e.target.value)}
-                    value={tag}
-                    onKeyDown={e => handleEnterPressInTagForm(e)}
+                    onChange={e => setNewTag(e.target.value)}
+                    value={newTag}
                 />
-                <button onClick={handleTagAdd}>Add Tag</button>
+                <button onClick={e => handleTagAdd(e)}>Add Tag</button>
+                <div className="tag-container">
+                    {renderTags}
+                </div>              
             </div>
             
             <input type='submit' value='Add Trash'/>

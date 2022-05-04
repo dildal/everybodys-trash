@@ -27,6 +27,8 @@ function App({cableApp}) {
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
   const [currentUser, setCurrentUser] = useState();
+  const [newMessage, setNewMessage] = useState(0);
+  const [uneadMessages, setUnreadMessages] = useState([]);
   const location = useLocation();
   
   const modal = location.state && location.state.modal
@@ -40,6 +42,12 @@ function App({cableApp}) {
       console.log('getting current location')
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
     })
+    
+    const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
+      received: (message) => handleReceivedMessage(message)
+    })
+
+    return () => channel.unsubscribe
   }, [])
 
   useEffect(() => {
@@ -53,6 +61,18 @@ function App({cableApp}) {
         }
       })
   }, [])
+
+  useEffect(() => {
+    if(currentUser){
+    fetch(`/unread_messages/${currentUser.id}`)
+      .then(res => {
+        if(res.ok){
+          res.json().then(data => setUnreadMessages(data))
+        } else{
+          console.log("Unread messages error")
+        }
+      })}
+  }, [currentUser])
 
   useEffect(() => {
 
@@ -135,6 +155,16 @@ function App({cableApp}) {
       id: newTrash.id
     }
     setGeoJSON([...geoJSON, newGeoJSON])
+  }
+
+  function handleReceivedMessage(message){
+    console.log(message)
+    if(currentUser){
+      if(currentUser.id === message.receiver_id){
+        console.log('You got a message bro!!!');
+        setNewMessage(newMessage+1)
+      }
+    }
   }
 
 
