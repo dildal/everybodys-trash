@@ -16,7 +16,7 @@ import EditPostForm from './components/EditPostForm';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ChatModal from './components/ChatModal';
 
-function App() {
+function App({cableApp}) {
   const [trash, setTrash] = useState([]);
   const [geoJSON, setGeoJSON] = useState([]);
   const [currentLocation, setCurrentLocation] = useState([-75.1652215, 39.9525839]);
@@ -227,7 +227,7 @@ function App() {
       {
         modal && 
         <Route path='/messages/:receiver_id'>
-          <ChatModal currentUser={currentUser} />
+          <ChatModal currentUser={currentUser} cableApp={cableApp}/>
         </Route>
       }
       </div>

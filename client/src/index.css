@@ -318,10 +318,44 @@ Chat pop-up
 */
 
 .pop-up{
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 60px;
   z-index: 5;
   height: 200px;
   border: 1px solid black;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+.chat-message{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.message-username{
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.message-text{
+  width: 100%;
+}
+
+.sent-at {
+  font-size: 10px;
+  width: 100%;
+}
+
+.chat-message.message-sent {
+  text-align: right;
+}
+
+.chat-message.message-received {
+  text-align: left;
 }

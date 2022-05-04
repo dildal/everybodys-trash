@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import actioncable from 'actioncable';
+
+const cableApp = {}
+cableApp.cable = actioncable.createConsumer('ws://localhost:3000/cable')
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-    <App />
-    </BrowserRouter>
+      <BrowserRouter>
+        <App cableApp={cableApp}/>
+      </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

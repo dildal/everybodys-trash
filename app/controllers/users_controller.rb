@@ -11,6 +11,11 @@ class UsersController < ApplicationController
         render json: @current_user
     end
 
+    def get_receiver
+        receiver = User.find(params[:id])
+        render json: receiver, status: :ok
+    end
+
     private
 
     def user_params
