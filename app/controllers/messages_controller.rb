@@ -27,6 +27,12 @@ class MessagesController < ApplicationController
         end
     end
 
+    def mark_as_read
+        Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false).update_all(read: true)
+        puts Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false)
+        head :no_content
+    end
+
     private
 
     def message_params

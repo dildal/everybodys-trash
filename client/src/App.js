@@ -29,9 +29,7 @@ function App({cableApp}) {
   const [currentUser, setCurrentUser] = useState();
   const [unreadMessages, setUnreadMessages] = useState({});
 
-  const location = useLocation();
   
-  const modal = location.state && location.state.modal
 
 
 
@@ -191,25 +189,18 @@ function App({cableApp}) {
     }
   }
 
-  const renderNotifactions = () => {
-    const notifications = []
-    for(const key in unreadMessages){
-      notifications.push(<Link to={`/messages/${key}`}>
-        <div className="chat-notification" key={key}>
-          <h3>{unreadMessages[key][0].sender.username} <span className="notification-number">{unreadMessages[key].length}</span></h3>
+  const renderNotifactions = Object.keys(unreadMessages).map(sender_id => {
+    return <Link to={`/messages/${sender_id}`}>
+        <div className="chat-notification" key={sender_id}>
+          <h3>{unreadMessages[sender_id][0].sender.username} <span className="notification-number">{unreadMessages[sender_id].length}</span></h3>
         </div>
-      </Link>)
-    }
-    return notifications
-  }
-
-
-
-
+    </Link>
+  })
+  
   return (
     <div className="App">
       <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <Switch location={modal || location}>
+      <Switch>
         <Route exact path='/login'>
           <Login setCurrentUser={setCurrentUser}/>
         </Route>
@@ -224,6 +215,9 @@ function App({cableApp}) {
         </Route>
         <Route  path='/posts/:postId/edit'>
           <EditPostForm />
+        </Route>
+        <Route path='/messages/:receiver_id'>
+          <ChatModal currentUser={currentUser} cableApp={cableApp} setUnreadMessages={setUnreadMessages} unreadMessages={unreadMessages}/>
         </Route>
         <Route  path='/'>
           <div className='home-page'>
@@ -290,13 +284,8 @@ function App({cableApp}) {
           </div>
         </Route>
       </Switch>
-      {
-        modal && 
-        <Route path='/messages/:receiver_id'>
-          <ChatModal currentUser={currentUser} cableApp={cableApp}/>
-        </Route>
-      }
-      { (currentUser && unreadMessages) && renderNotifactions()}
+
+      { (currentUser && unreadMessages) && renderNotifactions}
       </div>
       
   );
