@@ -6,7 +6,7 @@ import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
 import Header from './components/Header';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, Link } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
@@ -27,12 +27,11 @@ function App({cableApp}) {
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
   const [currentUser, setCurrentUser] = useState();
-  const [newMessage, setNewMessage] = useState(0);
-  const [uneadMessages, setUnreadMessages] = useState([]);
+  const [unreadMessages, setUnreadMessages] = useState({});
+
   const location = useLocation();
   
   const modal = location.state && location.state.modal
-  console.log(modal)
 
 
 
@@ -67,7 +66,24 @@ function App({cableApp}) {
     fetch(`/unread_messages/${currentUser.id}`)
       .then(res => {
         if(res.ok){
-          res.json().then(data => setUnreadMessages(data))
+          res.json().then(data => {
+            let unreads = {}
+            data.forEach(m => {
+              const sender_id = m.sender_id
+              if(unreads.hasOwnProperty(sender_id)){
+                unreads = {
+                  ...unreads, 
+                  [sender_id]: [...unreads[sender_id], m] 
+                }
+              } else{
+                unreads = {
+                  ...unreads, 
+                  [sender_id]: [m] 
+                }
+              }
+              setUnreadMessages(unreads)
+            })
+          })
         } else{
           console.log("Unread messages error")
         }
@@ -159,12 +175,32 @@ function App({cableApp}) {
 
   function handleReceivedMessage(message){
     console.log(message)
+    const sender_id = message.sender_id
     if(currentUser){
       if(currentUser.id === message.receiver_id){
         console.log('You got a message bro!!!');
-        setNewMessage(newMessage+1)
+        setUnreadMessages(unreadMessages => {
+          if(unreadMessages.hasOwnProperty(sender_id)){
+            console.log("adding to unread messages")
+            return {...unreadMessages, [sender_id]: [...unreadMessages[sender_id], message]} 
+          } else{
+            return {...unreadMessages, [sender_id]: [message]}
+          }
+        })
       }
     }
+  }
+
+  const renderNotifactions = () => {
+    const notifications = []
+    for(const key in unreadMessages){
+      notifications.push(<Link to={`/messages/${key}`}>
+        <div className="chat-notification" key={key}>
+          <h3>{unreadMessages[key][0].sender.username} <span className="notification-number">{unreadMessages[key].length}</span></h3>
+        </div>
+      </Link>)
+    }
+    return notifications
   }
 
 
@@ -260,6 +296,7 @@ function App({cableApp}) {
           <ChatModal currentUser={currentUser} cableApp={cableApp}/>
         </Route>
       }
+      { (currentUser && unreadMessages) && renderNotifactions()}
       </div>
       
   );

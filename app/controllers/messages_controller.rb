@@ -21,8 +21,7 @@ class MessagesController < ApplicationController
     def unread
         unread_messages = Message.where(receiver_id: params[:id], read: false).all
         if unread_messages
-            byebug
-            render json: unread_messages.select(:sender_id).distinct, status: :ok
+            render json: unread_messages, status: :ok
         else
             render json: [errors: "No unread Messages"]
         end
