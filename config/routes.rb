@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
   get '/receiver/:id', to: "users#get_receiver"
   get '/unread_messages/:id', to: "messages#unread"
-  patch '/mark_as_read', to: "messages#mark_as_read"
+  patch '/mark_as_read/:other_guy', to: "messages#mark_as_read"
 
   mount ActionCable.server => '/cable'
 

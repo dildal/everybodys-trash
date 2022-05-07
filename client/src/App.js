@@ -6,7 +6,7 @@ import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
 import Header from './components/Header';
-import { Switch, Route, useLocation, Link } from 'react-router-dom';
+import { Switch, Route, Link, useParams } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
@@ -14,7 +14,7 @@ import NewPostForm from './components/NewPostForm';
 import EditPostForm from './components/EditPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import ChatModal from './components/ChatModal';
+import ChatPage from './components/ChatPage';
 
 function App({cableApp}) {
   const [trash, setTrash] = useState([]);
@@ -27,10 +27,8 @@ function App({cableApp}) {
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
   const [currentUser, setCurrentUser] = useState();
-  const [unreadMessages, setUnreadMessages] = useState({});
-
-  
-
+  const [messageNotifications, setMessageNotifications] = useState({});
+  const {receiver_id} = useParams() || null;
 
 
 
@@ -56,38 +54,46 @@ function App({cableApp}) {
 
   useEffect(() => {
     if(currentUser){
-    // fetch(`/unread_messages/${currentUser.id}`)
-    //   .then(res => {
-    //     if(res.ok){
-    //       res.json().then(data => {
-    //         let unreads = {}
-    //         data.forEach(m => {
-    //           const sender_id = m.sender_id
-    //           if(unreads.hasOwnProperty(sender_id)){
-    //             unreads = {
-    //               ...unreads, 
-    //               [sender_id]: [...unreads[sender_id], m] 
-    //             }
-    //           } else{
-    //             unreads = {
-    //               ...unreads, 
-    //               [sender_id]: [m] 
-    //             }
-    //           }
-    //           setUnreadMessages(unreads)
-    //         })
-    //       })
-    //     } else{
-    //       console.log("Unread messages error")
-    //     }
-    //   })}
-      const channel = cableApp.cable.subscriptions.create({channel: "UserChannel", user: currentUser.id}, {
-        received: (message) => handleReceivedMessage(message)
-      })
-      console.log(channel.received)
-      return () => channel.unsubscribe
-    }
+      fetch(`/unread_messages/${currentUser.id}`)
+        .then(res => {
+          if(res.ok){
+            res.json().then(data => {
+              let unreads = {}
+              data.forEach(m => {
+                const sender_id = m.sender_id
+                if(sender_id === receiver_id){
+                  return
+                }
+                if(unreads.hasOwnProperty(sender_id)){
+                  unreads = {
+                    ...unreads, 
+                    [sender_id]: [...unreads[sender_id], m] 
+                  }
+                } else{
+                  unreads = {
+                    ...unreads, 
+                    [sender_id]: [m] 
+                  }
+                }
+                console.log({...unreads});
+                setMessageNotifications(unreads)
+              });
+            })
+          } else{
+            console.log("Unread messages error")
+          }
+        })
+        const channel = cableApp.cable.subscriptions.create({channel: "UserChannel", user: currentUser.id}, {
+          received: (notification) => handleReceivedNotification(notification)
+        })
+        console.log(channel.received)
+        return () => channel.unsubscribe
+      }
   }, [currentUser])
+
+  function getChatName() {
+    return messageNotifications[receiver_id].sender_name
+  }
 
   useEffect(() => {
 
@@ -126,6 +132,7 @@ function App({cableApp}) {
       null :
       e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']}).length ? setCursor('pointer') : setCursor('grab'), []
   });
+
   const onMouseLeave = useCallback(() => {
     return addTrash ? 
       null :
@@ -172,32 +179,29 @@ function App({cableApp}) {
     setGeoJSON([...geoJSON, newGeoJSON])
   }
 
-  function handleReceivedMessage(message){
-    console.log(message);
-    console.log("im in the received function")
-    const sender_id = message.sender_id
-    // if(currentUser){
-    //   if(currentUser.id === message.receiver_id){
-    //     console.log('You got a message bro!!!');
-    //     setUnreadMessages(unreadMessages => {
-    //       if(unreadMessages.hasOwnProperty(sender_id)){
-    //         console.log("adding to unread messages")
-    //         return {...unreadMessages, [sender_id]: [...unreadMessages[sender_id], message]} 
-    //       } else{
-    //         return {...unreadMessages, [sender_id]: [message]}
-    //       }
-    //     })
-    //   }
-    // }
+  function handleReceivedNotification(notification){
+    console.log(notification);
+    if(notification.type === "message"){
+      setMessageNotifications(messageNotifications => {
+        const sender_id = notification.sender_id
+        if(messageNotifications.hasOwnProperty(notification.sender_id)){
+          return {...messageNotifications, [sender_id]: [...messageNotifications[sender_id], notification]}
+        } else{
+          return {...messageNotifications, [sender_id]: [notification]}
+        }
+      })
+    }
   }
 
-  const renderNotifactions = Object.keys(unreadMessages).map(sender_id => {
+
+
+  const renderMessageNotifications = Object.keys(messageNotifications).map(sender_id => {
     return <Link to={`/messages/${sender_id}`}>
-        <div className="chat-notification" key={sender_id}>
-          <h3>{unreadMessages[sender_id][0].sender.username} <span className="notification-number">{unreadMessages[sender_id].length}</span></h3>
-        </div>
-    </Link>
-  })
+      <div className="chat-notification" key={sender_id}>
+        <h3>{messageNotifications[sender_id][0].sender_name} <span className="notification-number">{messageNotifications[sender_id].length}</span></h3>
+      </div>
+      </Link>
+    })
 
   return (
     <div className="App">
@@ -210,7 +214,7 @@ function App({cableApp}) {
           <Signup setCurrentUser={setCurrentUser}/>
         </Route>
         <Route  path='/bulletin'>
-          <BulletinBoard currentUser={currentUser}/>
+          <BulletinBoard currentUser={currentUser} />
         </Route>
         <Route  path='/posts/new'>
           <NewPostForm currentUser={currentUser}/>
@@ -219,7 +223,11 @@ function App({cableApp}) {
           <EditPostForm />
         </Route>
         <Route path='/messages/:receiver_id'>
-          <ChatModal currentUser={currentUser} cableApp={cableApp} setUnreadMessages={setUnreadMessages} unreadMessages={unreadMessages}/>
+          <ChatPage currentUser={currentUser} 
+            cableApp={cableApp} 
+            messageNotifications={messageNotifications}
+            setMessageNotifications={setMessageNotifications}
+          />
         </Route>
         <Route  path='/'>
           <div className='home-page'>
@@ -287,7 +295,7 @@ function App({cableApp}) {
         </Route>
       </Switch>
 
-      { (currentUser && unreadMessages) && renderNotifactions}
+      { (currentUser && messageNotifications) && renderMessageNotifications}
       </div>
       
   );

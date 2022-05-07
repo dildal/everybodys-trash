@@ -317,18 +317,24 @@ Chat pop-up
 ====================== 
 */
 
-.pop-up{
-  position: fixed;
-  bottom: 0;
-  right: 60px;
-  z-index: 5;
-  height: 350px;
-  border: 1px solid black;
-  overflow: scroll;
+.chat-page{
+  width: 90%;
   display: flex;
-  flex-direction: column;
-  width: 310px;
-  border-bottom: 20px solid black;
+  margin: 10px auto;
+}
+
+.chat-sidebar{
+  width: 30%;
+}
+
+.sidebar-item{
+  padding: 20px;
+  border-bottom: 1px solid;
+}
+
+
+.chat-window{
+  flex-grow: 1;
 }
 
 .chat-message{

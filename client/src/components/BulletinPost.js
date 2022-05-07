@@ -38,8 +38,8 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
   return (
     <div className={`bulletin-post ${giveClass}`} onClick={() => setDetailID(post.id)}>
         <p className='post-user'>{post.user.username} 
-        {(currentUser && currentUser.id !== post.user.id )&& <Link onClick={e => e.stopPropagation()} to={{
-        pathname: `messages/${post.user.id}`,
+        {(currentUser && currentUser.id !== post.user.id ) && <Link onClick={e => e.stopPropagation()} to={{
+        pathname: `/messages/${post.user.id}`,
         }}>
             Chat
         </Link>}

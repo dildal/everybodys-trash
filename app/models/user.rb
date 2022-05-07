@@ -10,4 +10,8 @@ class User < ApplicationRecord
     validates :username, uniqueness: true
     validates :username, :password_digest, :first_name, :last_name, presence: true
 
+
+    def partners
+        [*self.senders, *self.receivers].uniq
+    end
 end

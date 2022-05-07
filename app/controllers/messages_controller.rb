@@ -20,8 +20,9 @@ class MessagesController < ApplicationController
 
     def unread
         unread_messages = Message.where(receiver_id: params[:id], read: false).all
+        message_notifications = unread_messages.map(&:message_notification)
         if unread_messages
-            render json: unread_messages, status: :ok
+            render json: message_notifications, status: :ok
         else
             render json: [errors: "No unread Messages"]
         end
@@ -29,7 +30,7 @@ class MessagesController < ApplicationController
 
     def mark_as_read
         Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false).update_all(read: true)
-        puts Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false)
+        # puts Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false)
         head :no_content
     end
 

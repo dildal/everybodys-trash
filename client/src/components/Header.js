@@ -29,6 +29,7 @@ export default function Header({currentUser, setCurrentUser}) {
         <Link to="/bulletin" className='big-header-link'>
             Bulletin Board
         </Link>
+        {currentUser && <Link to="/wishlist" className='big-header-link'>Wishlist</Link>}
         {currentUser ?
             <div className='header-right'>
                 <p>Welcome, <em>{currentUser.first_name}</em>!</p>
