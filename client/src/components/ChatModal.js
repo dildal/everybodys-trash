@@ -5,7 +5,8 @@ import ChatMessage from './ChatMessage';
 export default function ChatModal({currentUser, cableApp, setUnreadMessages, unreadMessages}) {
   const {receiver_id} = useParams();
   const [messages, setMessages] = useState([]);
-  const [chatID, setChatID] = useState() 
+  const [chatID, setChatID] = useState();
+  const [channel, setChannel] = useState()
 
   const [message, setMessage] = useState({
       receiver_id,
@@ -16,11 +17,12 @@ export default function ChatModal({currentUser, cableApp, setUnreadMessages, unr
 
   useEffect(() => {
     //create a connection to a chat i guess?
-    const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
+    setChannel(cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
         received: (message) => handleReceivedMessage(message)
-    })
+    }))
+
     if(currentUser){    
-        const chatID = [receiver_id, currentUser.id].sort().join('_')
+        setChatID([receiver_id, currentUser.id].sort().join('_'))
         fetch(`/messages/${chatID}`)
         .then(res => {
             if(res.ok){
@@ -63,17 +65,18 @@ export default function ChatModal({currentUser, cableApp, setUnreadMessages, unr
 
   function handleSubmit(e){
     e.preventDefault();
-    fetch('/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(message)
-    })
-    .then(res => {
-       if(!res.ok){
-           console.log("ERROR!")
-       }
-       setMessage({...message, text: ''})
-    })
+    // fetch('/messages', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json'},
+    //     body: JSON.stringify(message)
+    // })
+    // .then(res => {
+    //    if(!res.ok){
+    //        console.log("ERROR!")
+    //    }
+    //    setMessage({...message, text: ''})
+    // })
+    channel.send({...message, chat_id: chatID})
     
   }
 

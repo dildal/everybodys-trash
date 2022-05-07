@@ -39,12 +39,7 @@ function App({cableApp}) {
       console.log('getting current location')
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
     })
-    
-    const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
-      received: (message) => handleReceivedMessage(message)
-    })
-
-    return () => channel.unsubscribe
+  
   }, [])
 
   useEffect(() => {
@@ -61,31 +56,37 @@ function App({cableApp}) {
 
   useEffect(() => {
     if(currentUser){
-    fetch(`/unread_messages/${currentUser.id}`)
-      .then(res => {
-        if(res.ok){
-          res.json().then(data => {
-            let unreads = {}
-            data.forEach(m => {
-              const sender_id = m.sender_id
-              if(unreads.hasOwnProperty(sender_id)){
-                unreads = {
-                  ...unreads, 
-                  [sender_id]: [...unreads[sender_id], m] 
-                }
-              } else{
-                unreads = {
-                  ...unreads, 
-                  [sender_id]: [m] 
-                }
-              }
-              setUnreadMessages(unreads)
-            })
-          })
-        } else{
-          console.log("Unread messages error")
-        }
-      })}
+    // fetch(`/unread_messages/${currentUser.id}`)
+    //   .then(res => {
+    //     if(res.ok){
+    //       res.json().then(data => {
+    //         let unreads = {}
+    //         data.forEach(m => {
+    //           const sender_id = m.sender_id
+    //           if(unreads.hasOwnProperty(sender_id)){
+    //             unreads = {
+    //               ...unreads, 
+    //               [sender_id]: [...unreads[sender_id], m] 
+    //             }
+    //           } else{
+    //             unreads = {
+    //               ...unreads, 
+    //               [sender_id]: [m] 
+    //             }
+    //           }
+    //           setUnreadMessages(unreads)
+    //         })
+    //       })
+    //     } else{
+    //       console.log("Unread messages error")
+    //     }
+    //   })}
+      const channel = cableApp.cable.subscriptions.create({channel: "UserChannel", user: currentUser.id}, {
+        received: (message) => handleReceivedMessage(message)
+      })
+      console.log(channel.received)
+      return () => channel.unsubscribe
+    }
   }, [currentUser])
 
   useEffect(() => {
@@ -172,21 +173,22 @@ function App({cableApp}) {
   }
 
   function handleReceivedMessage(message){
-    console.log(message)
+    console.log(message);
+    console.log("im in the received function")
     const sender_id = message.sender_id
-    if(currentUser){
-      if(currentUser.id === message.receiver_id){
-        console.log('You got a message bro!!!');
-        setUnreadMessages(unreadMessages => {
-          if(unreadMessages.hasOwnProperty(sender_id)){
-            console.log("adding to unread messages")
-            return {...unreadMessages, [sender_id]: [...unreadMessages[sender_id], message]} 
-          } else{
-            return {...unreadMessages, [sender_id]: [message]}
-          }
-        })
-      }
-    }
+    // if(currentUser){
+    //   if(currentUser.id === message.receiver_id){
+    //     console.log('You got a message bro!!!');
+    //     setUnreadMessages(unreadMessages => {
+    //       if(unreadMessages.hasOwnProperty(sender_id)){
+    //         console.log("adding to unread messages")
+    //         return {...unreadMessages, [sender_id]: [...unreadMessages[sender_id], message]} 
+    //       } else{
+    //         return {...unreadMessages, [sender_id]: [message]}
+    //       }
+    //     })
+    //   }
+    // }
   }
 
   const renderNotifactions = Object.keys(unreadMessages).map(sender_id => {
@@ -196,7 +198,7 @@ function App({cableApp}) {
         </div>
     </Link>
   })
-  
+
   return (
     <div className="App">
       <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>

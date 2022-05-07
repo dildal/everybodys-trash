@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :wishes
   resources :tags
   resources :messages, only: [:show, :create]
   resources :comments, only: [:create, :update, :destroy]
