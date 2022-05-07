@@ -6,7 +6,7 @@ import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
 import Header from './components/Header';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link, useParams } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
@@ -14,8 +14,9 @@ import NewPostForm from './components/NewPostForm';
 import EditPostForm from './components/EditPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ChatPage from './components/ChatPage';
 
-function App() {
+function App({cableApp}) {
   const [trash, setTrash] = useState([]);
   const [geoJSON, setGeoJSON] = useState([]);
   const [currentLocation, setCurrentLocation] = useState([-75.1652215, 39.9525839]);
@@ -25,7 +26,9 @@ function App() {
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(['trash-data', 'road-street', 'road-primary', 'road-secondary-tertiary', 'land'])
   const [openTrashForm, setOpenTrashForm] = useState(false)
   const [newTrashCoords, setNewTrashCoords] = useState();
-  const [currentUser, setCurrentUser] = useState()
+  const [currentUser, setCurrentUser] = useState();
+  const [messageNotifications, setMessageNotifications] = useState({});
+  const {receiver_id} = useParams() || null;
 
 
 
@@ -34,6 +37,7 @@ function App() {
       console.log('getting current location')
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
     })
+  
   }, [])
 
   useEffect(() => {
@@ -47,6 +51,49 @@ function App() {
         }
       })
   }, [])
+
+  useEffect(() => {
+    if(currentUser){
+      fetch(`/unread_messages/${currentUser.id}`)
+        .then(res => {
+          if(res.ok){
+            res.json().then(data => {
+              let unreads = {}
+              data.forEach(m => {
+                const sender_id = m.sender_id
+                if(sender_id === receiver_id){
+                  return
+                }
+                if(unreads.hasOwnProperty(sender_id)){
+                  unreads = {
+                    ...unreads, 
+                    [sender_id]: [...unreads[sender_id], m] 
+                  }
+                } else{
+                  unreads = {
+                    ...unreads, 
+                    [sender_id]: [m] 
+                  }
+                }
+                console.log({...unreads});
+                setMessageNotifications(unreads)
+              });
+            })
+          } else{
+            console.log("Unread messages error")
+          }
+        })
+        const channel = cableApp.cable.subscriptions.create({channel: "UserChannel", user: currentUser.id}, {
+          received: (notification) => handleReceivedNotification(notification)
+        })
+        console.log(channel.received)
+        return () => channel.unsubscribe
+      }
+  }, [currentUser])
+
+  function getChatName() {
+    return messageNotifications[receiver_id].sender_name
+  }
 
   useEffect(() => {
 
@@ -85,6 +132,7 @@ function App() {
       null :
       e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']}).length ? setCursor('pointer') : setCursor('grab'), []
   });
+
   const onMouseLeave = useCallback(() => {
     return addTrash ? 
       null :
@@ -131,8 +179,29 @@ function App() {
     setGeoJSON([...geoJSON, newGeoJSON])
   }
 
+  function handleReceivedNotification(notification){
+    console.log(notification);
+    if(notification.type === "message"){
+      setMessageNotifications(messageNotifications => {
+        const sender_id = notification.sender_id
+        if(messageNotifications.hasOwnProperty(notification.sender_id)){
+          return {...messageNotifications, [sender_id]: [...messageNotifications[sender_id], notification]}
+        } else{
+          return {...messageNotifications, [sender_id]: [notification]}
+        }
+      })
+    }
+  }
 
 
+
+  const renderMessageNotifications = Object.keys(messageNotifications).map(sender_id => {
+    return <Link to={`/messages/${sender_id}`}>
+      <div className="chat-notification" key={sender_id}>
+        <h3>{messageNotifications[sender_id][0].sender_name} <span className="notification-number">{messageNotifications[sender_id].length}</span></h3>
+      </div>
+      </Link>
+    })
 
   return (
     <div className="App">
@@ -144,16 +213,23 @@ function App() {
         <Route exact path='/signup'>
           <Signup setCurrentUser={setCurrentUser}/>
         </Route>
-        <Route exact path='/bulletin'>
-          <BulletinBoard currentUser={currentUser}/>
+        <Route  path='/bulletin'>
+          <BulletinBoard currentUser={currentUser} />
         </Route>
-        <Route exact path='/posts/new'>
+        <Route  path='/posts/new'>
           <NewPostForm currentUser={currentUser}/>
         </Route>
-        <Route exact path='/posts/:postId/edit'>
+        <Route  path='/posts/:postId/edit'>
           <EditPostForm />
         </Route>
-        <Route exact path='/'>
+        <Route path='/messages/:receiver_id'>
+          <ChatPage currentUser={currentUser} 
+            cableApp={cableApp} 
+            messageNotifications={messageNotifications}
+            setMessageNotifications={setMessageNotifications}
+          />
+        </Route>
+        <Route  path='/'>
           <div className='home-page'>
             <div className='map-container'>
               {openTrashForm && 
@@ -218,6 +294,8 @@ function App() {
           </div>
         </Route>
       </Switch>
+
+      { (currentUser && messageNotifications) && renderMessageNotifications}
       </div>
       
   );

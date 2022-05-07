@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
-export default function Comment({comment, currentUser, handleEditComment, handleDeleteComment}) {
+export default function Comment({comment, currentUser, handleEditComment, handleDeleteComment, setHideCommentForm}) {
   const [toggleEditForm, setToggleEditForm] = useState(false)
   const [editComment, setEditComment] = useState(comment)
+  const location = useLocation();
 
   function handleSubmit(e){
     e.preventDefault()
@@ -17,6 +19,7 @@ export default function Comment({comment, currentUser, handleEditComment, handle
         console.log(data.errors)
       } else{
         setToggleEditForm(false)
+        setHideCommentForm(false);
         handleEditComment(data)
       }
     })
@@ -34,9 +37,23 @@ export default function Comment({comment, currentUser, handleEditComment, handle
     })
   }
 
+  function handleToggles(){
+    setToggleEditForm(true);
+    setHideCommentForm(true);
+  }
+
   return (
     <div className='comment-container'>
       <h4>{comment.user.username}</h4>
+      {
+     (currentUser && currentUser.id !== comment.user.id) &&
+        <Link to={{
+        pathname: `/messages/${comment.user.id}`,
+        state: {modal: location}
+        }}>
+          Chat
+        </Link>
+      }
       {toggleEditForm ? 
       <form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="comment">
@@ -55,9 +72,9 @@ export default function Comment({comment, currentUser, handleEditComment, handle
       :
       <>
         <p>{comment.body}</p>
-        {currentUser.id == comment.user.id && 
+        {(currentUser && currentUser.id === comment.user.id) && 
           <div className='user-controls'>
-            <button onClick={() =>setToggleEditForm(true)}>Edit Comment</button>
+            <button onClick={handleToggles}>Edit Comment</button>
             <button onClick={handleDeleteClick}>Delete Comment</button>
           </div>
         }

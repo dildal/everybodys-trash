@@ -20,7 +20,7 @@ export default function BulletinBoard({currentUser}) {
   }, [])
 
   function handleDelete(id){
-      fetch(`posts/${id}`, {
+      fetch(`/posts/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json'}
       })
@@ -48,9 +48,12 @@ export default function BulletinBoard({currentUser}) {
   })
   
   return (
-    <div className='bulletin-board'>
-        {postsToRender}
-        {currentUser && <Link to='/posts/new' className='button-link'>New Post</Link>}
-    </div>
+     posts.length ?
+      <div className='bulletin-board'>
+          {postsToRender}
+          {currentUser && <Link to='/posts/new' className='button-link'>New Post</Link>}
+      </div>
+      :
+      <p>LOADING...</p>
   )
 }
