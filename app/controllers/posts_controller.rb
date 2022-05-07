@@ -6,7 +6,7 @@ class PostsController < ApplicationController
 
 
     def index
-        render json: Post.all, status: :ok
+        render json: Post.all, include: ['comments', 'comments.user', 'user'], status: :ok
     end
 
 
