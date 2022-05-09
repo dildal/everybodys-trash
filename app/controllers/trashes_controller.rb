@@ -9,7 +9,6 @@ class TrashesController < ApplicationController
 
     def create
         trash = Trash.create!(trash_params)
-        byebug
         params[:tags].each { |tag| Tag.create!({text: tag, trash: trash}) }
         render json: trash, status: :created
     end
@@ -20,10 +19,22 @@ class TrashesController < ApplicationController
         head :no_content
     end
 
+    def get_wanted
+        trashes = []
+        @current_user.wishes.each do |wish| 
+            tags = Tag.where(text: wish.name)
+            puts tags
+            if tags.length != 0
+                tags.each{|tag| trashes.push(tag.trash)}
+            end
+        end
+        render json: trashes, status: :ok
+    end
+
     private
 
     def trash_params
-        params.permit(:title, :description, :picture, :longitude, :latitude, :isHeavy, :category, )
+        params.permit(:title, :description, :picture, :longitude, :latitude, :isHeavy, :category )
     end
 
     def record_invalid(invalid)

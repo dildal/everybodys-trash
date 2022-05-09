@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function TrashListItem({trash, setExpandedId}) {
+export default function TrashListItem({trash, setExpandedId, fromWishPage}) {
   const {title, distance, description, category, isHeavy} = trash
   return (
     <a href="#trash-detail">
-      <div className='trash-list-item' onClick={() => setExpandedId(trash.id)}>
+      <div className={fromWishPage ? 'wish-trash-list-item' : 'trash-list-item'} onClick={() => setExpandedId(trash.id)}>
           <div className='trash-list-item-name'>
               <h3>{title}</h3>
           </div>
