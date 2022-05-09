@@ -15,6 +15,7 @@ import EditPostForm from './components/EditPostForm';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ChatPage from './components/ChatPage';
+import WishPage from './components/WishPage';
 
 function App({cableApp}) {
   const [trash, setTrash] = useState([]);
@@ -75,7 +76,6 @@ function App({cableApp}) {
                     [sender_id]: [m] 
                   }
                 }
-                console.log({...unreads});
                 setMessageNotifications(unreads)
               });
             })
@@ -228,6 +228,9 @@ function App({cableApp}) {
             messageNotifications={messageNotifications}
             setMessageNotifications={setMessageNotifications}
           />
+        </Route>
+        <Route path="/wishlist">
+          <WishPage currentUser={currentUser} currentLocation={currentLocation}/>
         </Route>
         <Route  path='/'>
           <div className='home-page'>

@@ -408,11 +408,11 @@ Tags
   font-weight: bold;
 }
 
+/* ============================
+Wish page
+============================ */
 
-
-
-/* #3a4664
-#eaa0a2
-#ffdbdc
-#ffffff
-#aaa */
+.wish-form{
+  flex-direction: row;
+  justify-content: center;
+}

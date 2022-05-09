@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :wishes
+  resources :wishes, only: [:create]
   resources :tags
   resources :messages, only: [:show, :create]
   resources :comments, only: [:create, :update, :destroy]
@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/receiver/:id', to: "users#get_receiver"
   get '/unread_messages/:id', to: "messages#unread"
   patch '/mark_as_read/:other_guy', to: "messages#mark_as_read"
+  get '/trashes/wanted_by_user', to: "trashes#get_wanted"
 
   mount ActionCable.server => '/cable'
 

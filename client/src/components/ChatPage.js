@@ -7,7 +7,8 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
   const {receiver_id} = useParams();
   const [messages, setMessages] = useState([]);
   const [chatID, setChatID] = useState();
-  const [channel, setChannel] = useState()
+  const [channel, setChannel] = useState();
+  const [chatWith, setChatWith] = useState();
   const location = useLocation()
 
   const [message, setMessage] = useState({
@@ -19,6 +20,13 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
   useEffect(() => {
     if(currentUser){
         setChatID([receiver_id, currentUser.id].sort().join('_'))
+        setChatWith(() => {
+            const partner = currentUser.partners.find(p => {
+                return +p.id === +receiver_id
+            });
+            console.log(partner)
+            return partner ? partner.username : "";
+        })
     }
   }, [currentUser, location])
 
@@ -91,7 +99,8 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         <div className="chat-page">
             <ChatsSideBar messageNotifications={messageNotifications} currentUser={currentUser}/>
             <div className="chat-window">
-                <h1>Chat with **</h1>
+                
+                <h1>Chat with {chatWith}</h1>
                 {renderMessages}
                 <form onSubmit={e => handleSubmit(e)}>
                     <input 

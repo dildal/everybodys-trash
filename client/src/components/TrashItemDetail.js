@@ -5,12 +5,13 @@ import Tag from './Tag'
 export default function TrashItemDetail({
     trash, 
     setExpandedId, 
-    handleRemoveTrash
+    handleRemoveTrash,
+    fromWishPage
 }) {
     
     const [picSrc, setPicSrc] = useState(trash.picture)
 
-    const images ={
+    const images = {
         furniture: furniturePic
     }
 
@@ -45,7 +46,7 @@ export default function TrashItemDetail({
                     {renderTags}
                 </div>
                 {trash.isHeavy ? <span>weight icon</span> : <span>feather icon</span>}
-                <button onClick={handleDelete}>Mark as picked Up</button>
+                {fromWishPage || <button onClick={handleDelete}>Mark as picked Up</button>}
             </main>
         </div>
     )
