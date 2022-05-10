@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../images/logo.png';
 import { Link, useHistory } from 'react-router-dom';
 
-export default function Header({currentUser, setCurrentUser}) {
+export default function Header({currentUser, setCurrentUser, mapHeader}) {
   const history = useHistory();
   
   function handleLogOut(){
@@ -21,15 +21,15 @@ export default function Header({currentUser, setCurrentUser}) {
   }
 
   return (
-    <header>
+    <header className="main-header">
         <Link to='/'>
             <img src={Logo} style={{height: '72px'}} alt="Everybody's trash logo"/>
         </Link>
             
-        <Link to="/bulletin" className='big-header-link'>
+        {mapHeader && <Link to="/bulletin" className='big-header-link'>
             Bulletin Board
-        </Link>
-        {currentUser && <Link to="/wishlist" className='big-header-link'>Wishlist</Link>}
+        </Link>}
+        {(currentUser && mapHeader) && <Link to="/wishlist" className='big-header-link'>Wishlist</Link>}
         {currentUser ?
             <div className='header-right'>
                 <p>Welcome, <em>{currentUser.first_name}</em>!</p>
