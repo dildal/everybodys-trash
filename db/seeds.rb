@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Trash.create([{longitude: -75.160834,latitude: 39.931790, picture: "https://unsplash.com/photos/tlKTvMlu_fA", category: "furniture", title: "Modern Chair", isHeavy: false, description: "Chair on broad and south in pretty good condition."}, 
-    {longitude: -75.173533,latitude: 39.930460, picture: "https://unsplash.com/photos/fZuleEfeA1Q", category: "furinture", title: "Green couch", isHeavy: true, description: "Green couch in good condition. Pretty big probably need a truck"},
-    {longitude: -75.162089,latitude: 39.951058, picture: "https://unsplash.com/photos/0ClfreiNppM", category: "misc", title: "Bicycle", isHeavy: false, description: "Bike in really good condition.  Needs new front tire."},
-    {longitude: -75.127340,latitude: 39.971325, picture: "https://thumbs.dreamstime.com/b/pile-old-clothes-shoes-dumped-underground-dumpster-cans-as-junk-garbage-littering-polluting-urban-city-street-143693667.jpg", category: "clothing", title: "Bunch of clothes", isHeavy: false, description: "Shirts, pants, and sweaters various states of disrepair"},
-    {longitude: -75.200030,latitude: 39.955566, picture: "https://unsplash.com/photos/VDPauwJ_sHo", category: "electronics", title: "Copper Desk Lamp", isHeavy: false, description: "Copper desk lamp. Works!"}    
+Trash.create([{longitude: -75.160834,latitude: 39.931790, category: "furniture", title: "Modern Chair", isHeavy: false, description: "Chair on broad and south in pretty good condition."}, 
+    {longitude: -75.173533,latitude: 39.930460, category: "furinture", title: "Green couch", isHeavy: true, description: "Green couch in good condition. Pretty big probably need a truck"},
+    {longitude: -75.162089,latitude: 39.951058, category: "misc", title: "Bicycle", isHeavy: false, description: "Bike in really good condition.  Needs new front tire."},
+    {longitude: -75.127340,latitude: 39.971325, category: "clothing", title: "Bunch of clothes", isHeavy: false, description: "Shirts, pants, and sweaters various states of disrepair"},
+    {longitude: -75.200030,latitude: 39.955566, category: "electronics", title: "Copper Desk Lamp", isHeavy: false, description: "Copper desk lamp. Works!"}    
 ])
 
 user = User.create({username: 'donny', password: 'donny', password_confirmation: 'donny', first_name: 'Donny', last_name: "Normal", city: 'philadelphia'})
@@ -22,3 +22,13 @@ Post.create({title: "I have a ton of jars", body: "Hey y'all I called off my wed
 Post.create({title: 'Hunting for Z\'s', body: 'Looking for some z\'s anybody have some they can spare?', user: user2, is_request: true})
 
 Comment.create({body: 'I have 2 jars you can have.  Good luck with the other 498', user: user2, post: post1})
+
+Trash.first.tags.create([{text: "chair"}, {text: "seating"}, {text: "computer chair"}, {text: "swivel chair"}])
+Trash.second.tags.create([{text: "chair"}, {text: "couch"}, {text: "large couch"}, {text: "love seat"}])
+Trash.third.tags.create([{text: "bike"}, {text: "bicycle"}])
+
+Trash.first.picture.attach(io: File.open( 'storage/chair-trash.jpeg'), filename: 'chair-trash.jpeg')
+Trash.second.picture.attach(io: File.open('storage/couch-trash.webp'), filename: 'couch-trash.jpeg')
+Trash.third.picture.attach(io: File.open('storage/bike-trash.jpeg'), filename: 'bike-trash.jpeg')
+Trash.fourth.picture.attach(io: File.open('storage/pile-o-clothes-trash.jpeg'), filename: 'pile-o-clothes-trash.jpeg')
+Trash.last.picture.attach(io: File.open('storage/lamp-trash.jpeg'), filename: 'lamp-trash.jpeg')
