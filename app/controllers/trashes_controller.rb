@@ -9,7 +9,7 @@ class TrashesController < ApplicationController
 
     def create
         trash = Trash.create!(trash_params)
-        params[:tags].each { |tag| Tag.create!({text: tag, trash: trash}) }
+        params[:tags].split(',').each { |tag| Tag.create!({text: tag, trash: trash}) }
         render json: trash, status: :created
     end
 

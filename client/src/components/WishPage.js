@@ -10,6 +10,9 @@ export default function WishPage({currentUser, currentLocation}) {
 
   useEffect(() => {
     currentUser && setWishes(currentUser.wishes);
+  }, [currentUser])
+
+  useEffect(() => {
     fetch('/trashes/wanted_by_user')
     .then(res => {
         if (res.ok) {
@@ -20,7 +23,7 @@ export default function WishPage({currentUser, currentLocation}) {
             console.log("ERROR FETCHING WANTED TRASH")
         }
     })
-  }, [currentUser])
+  }, [wishes])
   
   function handleAddToWishlist(wish){
     setWishes([...wishes, wish])
@@ -33,7 +36,7 @@ export default function WishPage({currentUser, currentLocation}) {
         <h1>{currentUser.first_name}'s Wishlist</h1>
         <WishForm currentUser={currentUser} handleAddToWishlist={handleAddToWishlist}/>
         <WishList wishes={wishes} />
-        { matchingTrash.length && <TrashList trash={matchingTrash} fromWishPage={true}/> }
+        { matchingTrash.length ? <TrashList trash={matchingTrash} fromWishPage={true}/> : null}
     </div> :
     <h1>Loading...</h1>
   )

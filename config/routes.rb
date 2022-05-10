@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :wishes, only: [:create]
-  resources :tags
+  resources :tags, only: [:create]
   resources :messages, only: [:show, :create]
   resources :comments, only: [:create, :update, :destroy]
   resources :posts

@@ -24,7 +24,7 @@ export default function NewTrashForm({
     tags: []
   }
 
-  const [newTrash, setNewTrash] = useState(trashInit)
+  const [newTrash, setNewTrash] = useState(trashInit);
 
   const [newTag, setNewTag] = useState('');
   const [tags, setTags] = useState([])
@@ -49,10 +49,17 @@ export default function NewTrashForm({
 
   function handleSubmit(e){
       e.preventDefault();
+      console.log(newTrash)
+      const formData = new FormData();
+      for( const property in newTrash){
+          formData.append(property, newTrash[property]);
+          console.log(formData.keys)
+      }
+      console.log(formData);
       fetch('/trashes', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json'},
-          body: JSON.stringify(newTrash)
+        //   headers: { 'Content-Type': 'application/json'},
+          body: formData
       })
       .then(r => r.json())
       .then(data => {
@@ -103,8 +110,7 @@ export default function NewTrashForm({
                     name="picture" 
                     accept="image/png, image/gif, image/jpeg"
                     id="picture"
-                    onChange={e => setNewTrash({...newTrash, picture: e.target.value})}
-                    value={newTrash.picture}
+                    onChange={e => {setNewTrash(newTrash => ({...newTrash, picture: e.target.files[0]}))}}
                 />
             </div>
             <div className="input-container">
