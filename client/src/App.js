@@ -6,12 +6,14 @@ import {distance} from '@turf/turf';
 import TrashList from './components/TrashList';
 import NewTrashForm from './components/NewTrashForm'
 import Header from './components/Header';
-import { Switch, Route, Link, useParams } from 'react-router-dom';
+import { Switch, Route, Link, useParams, useLocation } from 'react-router-dom';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import BulletinBoard from './components/BulletinBoard';
 import NewPostForm from './components/NewPostForm';
 import EditPostForm from './components/EditPostForm';
+import About from './components/About';
+import Navbar from './components/Navbar';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ChatPage from './components/ChatPage';
@@ -30,6 +32,9 @@ function App({cableApp}) {
   const [currentUser, setCurrentUser] = useState();
   const [messageNotifications, setMessageNotifications] = useState({});
   const {receiver_id} = useParams() || null;
+  
+  const location = useLocation();
+
 
 
 
@@ -205,99 +210,105 @@ function App({cableApp}) {
 
   return (
     <div className="App">
-      <Header currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <Switch>
-        <Route exact path='/login'>
-          <Login setCurrentUser={setCurrentUser}/>
-        </Route>
-        <Route exact path='/signup'>
-          <Signup setCurrentUser={setCurrentUser}/>
-        </Route>
-        <Route  path='/bulletin'>
-          <BulletinBoard currentUser={currentUser} />
-        </Route>
-        <Route  path='/posts/new'>
-          <NewPostForm currentUser={currentUser}/>
-        </Route>
-        <Route  path='/posts/:postId/edit'>
-          <EditPostForm />
-        </Route>
-        <Route path='/messages/:receiver_id'>
-          <ChatPage currentUser={currentUser} 
-            cableApp={cableApp} 
-            messageNotifications={messageNotifications}
-            setMessageNotifications={setMessageNotifications}
-          />
-        </Route>
-        <Route path="/wishlist">
-          <WishPage currentUser={currentUser} currentLocation={currentLocation}/>
-        </Route>
-        <Route  path='/'>
-          <div className='home-page'>
-            <div className='map-container'>
-              {openTrashForm && 
-                <NewTrashForm 
-                  {...newTrashCoords}
-                  setOpenTrashForm={setOpenTrashForm}
-                  currentLocation={currentLocation}
-                  handleAddTrash={handleAddTrash}
-                  interactiveLayerIds={interactiveLayerIds}
-                  setInteractiveLayerIds={setInteractiveLayerIds}
-                  setAddTrash={setAddTrash}
-                />
-              }
-              <Map
-                initialViewState={{
-                  latitude: 39.9525839,
-                  longitude: -75.1652215,
-                  zoom: 12.5
-                }}
-                mapStyle="mapbox://styles/mddally/ck91ip5tc0s2f1iqipugocf9q"
-                mapboxAccessToken='pk.eyJ1IjoibWRkYWxseSIsImEiOiJjazh5bnh3aGkxa2RkM2Zudm9nY2RmNDQ3In0.D3nJ_3OesFjpqAX3l8neYA'
-                interactiveLayerIds={interactiveLayerIds}
-                cursor={cursor}
-                onMouseEnter={e => onMouseEnter(e)}
-                onMouseLeave={e => onMouseLeave(e)}
-                onClick={(e) => handleClick(e) }
-              >
-                  <button 
-                    className="toggle-trash-button"
-                    onClick={() => {
-                      setCursor('pointer')
-                      setAddTrash(true)
-                      setInteractiveLayerIds(interactiveLayerIds.filter(lay => lay !== 'trash-data'))
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} mapHeader={location.pathname === '/trash'}/>
+      <div className='main'>
+        {location.pathname !== '/trash' && <Navbar currentUser={currentUser}/>}
+        <Switch>
+          <Route exact path='/login'>
+            <Login setCurrentUser={setCurrentUser}/>
+          </Route>
+          <Route exact path='/signup'>
+            <Signup setCurrentUser={setCurrentUser}/>
+          </Route>
+          <Route  path='/bulletin'>
+            <BulletinBoard currentUser={currentUser} />
+          </Route>
+          <Route  path='/posts/new'>
+            <NewPostForm currentUser={currentUser}/>
+          </Route>
+          <Route  path='/posts/:postId/edit'>
+            <EditPostForm />
+          </Route>
+          <Route path='/messages/:receiver_id'>
+            <ChatPage currentUser={currentUser} 
+              cableApp={cableApp} 
+              messageNotifications={messageNotifications}
+              setMessageNotifications={setMessageNotifications}
+            />
+          </Route>
+          <Route path="/wishlist">
+            <WishPage currentUser={currentUser} currentLocation={currentLocation}/>
+          </Route>
+          <Route  path='/trash'>
+            <div className='home-page'>
+              <div className='map-container'>
+                {openTrashForm && 
+                  <NewTrashForm 
+                    {...newTrashCoords}
+                    setOpenTrashForm={setOpenTrashForm}
+                    currentLocation={currentLocation}
+                    handleAddTrash={handleAddTrash}
+                    interactiveLayerIds={interactiveLayerIds}
+                    setInteractiveLayerIds={setInteractiveLayerIds}
+                    setAddTrash={setAddTrash}
+                  />
+                }
+                <Map
+                  initialViewState={{
+                    latitude: 39.9525839,
+                    longitude: -75.1652215,
+                    zoom: 12.5
                   }}
-                  >
-                    Add Trash
-                  </button>
-                <Source id="trash-data" type="geojson" data={{type: 'FeatureCollection', features: geoJSON}}>
-                  <Layer {...layerStyle} />
-                  {popupInfo && (
-                  <Popup
-                    anchor="top"
-                    longitude={Number(popupInfo.longitude)}
-                    latitude={Number(popupInfo.latitude)}
-                    onClose={() => setPopupInfo(null)}
-                    closeOnClick={false}
-                  >
-                    <div className='popup'>
-                      <h3>{popupInfo.title}</h3>
-                    </div>
-                    <img width="100%" src={popupInfo.picture} />
-                  </Popup>
-                )}
-                </Source>
-                <Marker longitude={currentLocation[0]} latitude={currentLocation[1]} anchor="bottom" style={{height:'20px', width: '20px'}}/>
-              </Map>
+                  mapStyle="mapbox://styles/mddally/ck91ip5tc0s2f1iqipugocf9q"
+                  mapboxAccessToken='pk.eyJ1IjoibWRkYWxseSIsImEiOiJjazh5bnh3aGkxa2RkM2Zudm9nY2RmNDQ3In0.D3nJ_3OesFjpqAX3l8neYA'
+                  interactiveLayerIds={interactiveLayerIds}
+                  cursor={cursor}
+                  onMouseEnter={e => onMouseEnter(e)}
+                  onMouseLeave={e => onMouseLeave(e)}
+                  onClick={(e) => handleClick(e) }
+                >
+                    <button 
+                      className="toggle-trash-button"
+                      onClick={() => {
+                        setCursor('pointer')
+                        setAddTrash(true)
+                        setInteractiveLayerIds(interactiveLayerIds.filter(lay => lay !== 'trash-data'))
+                    }}
+                    >
+                      Add Trash
+                    </button>
+                  <Source id="trash-data" type="geojson" data={{type: 'FeatureCollection', features: geoJSON}}>
+                    <Layer {...layerStyle} />
+                    {popupInfo && (
+                    <Popup
+                      anchor="top"
+                      longitude={Number(popupInfo.longitude)}
+                      latitude={Number(popupInfo.latitude)}
+                      onClose={() => setPopupInfo(null)}
+                      closeOnClick={false}
+                    >
+                      <div className='popup'>
+                        <h3>{popupInfo.title}</h3>
+                      </div>
+                      <img width="100%" src={popupInfo.picture} />
+                    </Popup>
+                  )}
+                  </Source>
+                  <Marker longitude={currentLocation[0]} latitude={currentLocation[1]} anchor="bottom" style={{height:'20px', width: '20px'}}/>
+                </Map>
+              </div>
+              <TrashList 
+                trash={trash}
+                handleRemoveTrash={handleRemoveTrash}
+              /> 
             </div>
-            <TrashList 
-              trash={trash}
-              handleRemoveTrash={handleRemoveTrash}
-            /> 
-          </div>
-        </Route>
-      </Switch>
-
+          </Route>
+          <Route path="/">
+            <About />
+          </Route>
+        </Switch>
+      </div>
+      
       { (currentUser && messageNotifications) && renderMessageNotifications}
       </div>
       
