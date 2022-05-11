@@ -34,7 +34,7 @@ export default function Signup({setCurrentUser}) {
   return (
     <div style={{width: '60%', margin: '0 auto'}}>
         <h3>Signup</h3>
-        <form onSubmit={e => handleSubmit(e)}>
+        <form className='big-form' onSubmit={e => handleSubmit(e)}>
             <div className="input-container">
                 <label htmlFor="username">
                     Username:
@@ -100,7 +100,7 @@ export default function Signup({setCurrentUser}) {
                     value={user.last_name}
                 />
             </div>
-            <input type='submit' value="Sign Up" />
+            <input className='main-button' type='submit' value="Sign Up" />
         </form>
     </div>
   )

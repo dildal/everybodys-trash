@@ -33,19 +33,19 @@ export default function WishPage({currentUser, currentLocation}) {
   return (
     currentUser ? 
     <div className='wish-page'>
-        <h1>Wishlist</h1>
+        <h1 className="page-header">Wishlist</h1>
         <div className="wish-main">
+          <div className='wish-blurb-container'>
+            <h4 className='subheader'>About the wish page</h4>
+            <p className="blurb">
+              Add items to your wish list.  If someone tags trash near you it will show up here! The wish granter looks for tags on trash that match items on your wish list so don't be shy with the tags.  Throw out all the words you think someone might tag your coveted trash with.  And don't forget to pay it forward - add tags to trash on the map to make our wish-granting more robust.
+            </p>
+          </div>
           <div className="wish-page-side">
             <WishForm currentUser={currentUser} handleAddToWishlist={handleAddToWishlist}/>
             <WishList wishes={wishes} />
           </div>
           { matchingTrash.length ? <TrashList trash={matchingTrash} fromWishPage={true}/> : null }
-          <div className='wish-blurb-container'>
-            <h4 className='subheader'>About the wish page</h4>
-            <p className="blurb">
-              Add items to your wish list.  If someone tags trash near you it will show up here! The wish granter looks for tags on trash that match items on your wish list so don't be shy with the tags.  Throw out all the words you think someone might tag your coveted trash with.  And don't forget to pay it forward - and tags to trash on the map to make our wish-granting more robust.
-            </p>
-          </div>
         </div>
 
     </div> :

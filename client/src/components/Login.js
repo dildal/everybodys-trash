@@ -21,7 +21,7 @@ export default function Login({setCurrentUser}) {
             console.log(data.errors)
         } else{
             setCurrentUser(data);
-            history.push('/');
+            history.push('/trash');
         }
     })
   }
@@ -29,7 +29,7 @@ export default function Login({setCurrentUser}) {
   return (
     <div style={{width: '60%', margin: '0 auto'}}>
         <h3>Login</h3>
-        <form onSubmit={e => handleSubmit(e)}>
+        <form className='big-form' onSubmit={e => handleSubmit(e)}>
             <div className="input-container">
                 <label htmlFor="username">
                     Username:
@@ -56,7 +56,7 @@ export default function Login({setCurrentUser}) {
                     value={user.password}
                 />
             </div>
-            <input type='submit' value='Log in' />
+            <input type='submit' value='Log in' className='main-button'/>
         </form>
     </div>
 

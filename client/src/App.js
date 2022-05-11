@@ -201,16 +201,19 @@ function App({cableApp}) {
 
 
   const renderMessageNotifications = Object.keys(messageNotifications).map(sender_id => {
-    return <Link to={`/messages/${sender_id}`}>
-      <div className="chat-notification" key={sender_id}>
+    return <Link to={`/messages/${sender_id}`} className="chat-notification" key={sender_id}>
         <h3>{messageNotifications[sender_id][0].sender_name} <span className="notification-number">{messageNotifications[sender_id].length}</span></h3>
-      </div>
       </Link>
     })
 
   return (
     <div className="App">
-      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} mapHeader={location.pathname === '/trash'}/>
+      <Header 
+        currentUser={currentUser} 
+        setCurrentUser={setCurrentUser} 
+        mapHeader={location.pathname === '/trash'}
+        setMessageNotifications={setMessageNotifications}
+      />
       <div className='main'>
         {location.pathname !== '/trash' && <Navbar currentUser={currentUser}/>}
         <Switch>
@@ -270,7 +273,7 @@ function App({cableApp}) {
                     <button 
                       className="toggle-trash-button"
                       onClick={() => {
-                        setCursor('pointer')
+                        setCursor('crosshair')
                         setAddTrash(true)
                         setInteractiveLayerIds(interactiveLayerIds.filter(lay => lay !== 'trash-data'))
                     }}
@@ -309,9 +312,12 @@ function App({cableApp}) {
         </Switch>
       </div>
       
-      { (currentUser && messageNotifications) && renderMessageNotifications}
+      { (currentUser && messageNotifications) && 
+      <div className='chat-notification-bar'>
+        {renderMessageNotifications}
       </div>
-      
+      }
+    </div>
   );
 }
 

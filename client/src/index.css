@@ -3,6 +3,7 @@ html {
 }
 
 body {
+  height: 100vh;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -17,6 +18,8 @@ input, textarea, select {
 
 .main {
   margin-top: 93px;
+  margin-bottom: 20px;
+  overflow: scroll;
 }
 
 .main-button {
@@ -30,6 +33,11 @@ input, textarea, select {
   font-size: 1rem;
 }
 
+.large-button {
+  display: block;
+  width: 300px;
+}
+
 .secondary-button {
   background: #694a52;
   border: white;
@@ -41,14 +49,36 @@ input, textarea, select {
   margin-right: 10px;
 }
 
+.light  {
+  color: white;
+}
+
 .big-form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  color: white;
   padding: 12px;
   justify-content: space-around;
   height: 100%;
+  text-align: left;
+}
+
+.big-form input[type="submit"]{
+  width: 50%;
+  align-self: center;
+}
+
+.input-container > * {
+  margin-bottom: 10px;
+}
+
+.chat-link {
+  color: lightcoral;
+  margin-left: 6px;
+}
+
+.big-input {
+  width: 80%;
 }
 
 * {
@@ -274,7 +304,7 @@ Add trash form style
   margin-bottom: 8px;
 }
 
-.trash-form-container form input {
+.trash-form-container form input[type="text"] {
   line-height: 22px;
   border-radius: 4px;
   border: none;
@@ -339,7 +369,7 @@ Trash Detail Card style
 
 #trash-detail header button{
     justify-self: flex-end;
-    background: #efe0d8;
+    background: rgba(0,0,0,0);
     border: none;
     padding: 1px 17px;
     cursor: pointer;
@@ -353,18 +383,6 @@ Trash Detail Card style
   padding: 0;
 }
 
-#trash-detail>main>button{
-  border: 1px solid black;
-  cursor: pointer;
-  color: white;
-  font-weight: normal;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  align-self: center;
-  background: #3a4664;
-  padding: 10px;
-}
 
 /* =====================
 Pop up styles
@@ -376,13 +394,29 @@ Pop up styles
 /*======================
 Bulletin Board and Posts styles
 ======================== */
-.bulletin-post {
+.bulletin-board{
   width: 60%;
+}
+
+.bulletin-post {
+  width: 100%;
   margin: 20px 80px;
   text-align: left;
-  cursor: pointer;
   border-bottom: 5px solid #98bfad;
   padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.bulletin-post:hover .post-expand-carrot {
+  transform: rotate(90deg);
+}
+
+.carrot-expanded {
+  transform: rotate(90deg);
+}
+
+.bulletin-post:hover .carrot-expanded {
+  transform: rotate(270deg);
 }
 
 .post-user{
@@ -419,6 +453,18 @@ Bulletin Board and Posts styles
 .comment-form {
   padding: 10px 20px;
 }
+
+.bulletin-board > a {
+  margin: 0 auto;
+}
+
+.post-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 
 /* 
 ======================
@@ -478,6 +524,30 @@ Chat pop-up
   text-align: left;
 }
 
+.chat-notification-bar {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  z-index: 20;
+}
+
+.chat-notification{
+  width: 20%;
+  padding: 10px 0px 5px 15px;
+  background-color: #efe0d8;
+  opacity: .7;
+  text-transform: uppercase;
+  font-size: 14px;
+  text-align: left;
+  border-right: 1px solid black;
+}
+
+.chat-notification:hover{
+  opacity: 1;
+}
+
+
 /* ================================
 Tags
 ================================ */
@@ -526,6 +596,7 @@ Wish page
   width: 80%;
   margin: 20px auto;
   overflow: scroll;
+  justify-content: space-between;
 }
 
 .wish-main-side.left{
@@ -577,10 +648,10 @@ input#wish {
 }
 
 .wish-page-trash-list-container {
-  width: 40%;
+  width: 30%;
 }
 
-.wish-page h1 {
+.page-header {
   font-size: 52px;
   letter-spacing: 3px;
   font-weight: 600;
@@ -617,7 +688,7 @@ input#wish {
 }
 
 .wish-page-side{
-  width: 34%;
+  width: 30%;
 }
 
 .wish-blurb-container{

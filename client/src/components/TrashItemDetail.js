@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import furniturePic from '../images/furniture.jpg'
-import Tag from './Tag'
+import Tag from './Tag';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFeather, faWeightHanging } from '@fortawesome/free-solid-svg-icons';
 
 export default function TrashItemDetail({
     trash, 
@@ -65,7 +67,7 @@ export default function TrashItemDetail({
                 <div className="tag-container">
                     {renderTags}
                     {toggleForm ? 
-                        <form onSubmit={e => (handleSubmit(e))}>
+                        <form style={{width: '100%', marginTop: "5px"}} onSubmit={e => (handleSubmit(e))}>
                            <label htmlFor='tags'>
                                 Add Tag:
                             </label>
@@ -76,14 +78,16 @@ export default function TrashItemDetail({
                                 onChange={e => setNewTag({...newTag, text: e.target.value})}
                                 value={newTag.text}
                             />
-                            <input type='submit' value="Add tag" />
+                            <input type='submit' value="Add tag" className='secondary-button'/>
                         </form>
                         :
-                        <button onClick={() => setToggleForm(true)}>+</button>
+                        <button onClick={() => setToggleForm(true)}></button>
                     }
                 </div>
-                {trash.isHeavy ? <span>weight icon</span> : <span>feather icon</span>}
-                {fromWishPage || <button onClick={handleDelete}>Mark as picked Up</button>}
+                <div className="detail-icons">
+                    {trash.isHeavy ? <FontAwesomeIcon icon={faWeightHanging} style={{color: 'lightcoral'}} /> : <FontAwesomeIcon icon={faFeather} style={{color: 'lightcoral'}} />}
+                    {fromWishPage || <button style={{marginLeft: "5px"}} className="main-button" onClick={handleDelete}>Mark as picked Up</button>}
+                </div>
             </main>
         </div>
     )

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import CommentForm from './CommentForm';
 import Comment from './Comment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage } from '@fortawesome/free-solid-svg-icons';
 
 export default function BulletinPost({post, isEditable, handleDelete, setDetailID, isDetailed, currentUser}) {
   const giveClass = post.is_request ? '' : 'giving-away'
@@ -36,14 +38,17 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
     />
   })
   return (
-    <div className={`bulletin-post ${giveClass}`} onClick={() => setDetailID(post.id)}>
-        <p className='post-user'>{post.user.username} 
-        {(currentUser && currentUser.id !== post.user.id ) && <Link onClick={e => e.stopPropagation()} to={{
-        pathname: `/messages/${post.user.id}`,
-        }}>
-            Chat
-        </Link>}
-        </p>
+    <div className={`bulletin-post ${giveClass}`} onClick={() => setDetailID((detailID) => detailID === post.id ? null : post.id)}>
+        <div className='post-header'>
+            <p className='post-user'>{post.user.username} 
+            {(currentUser && currentUser.id !== post.user.id ) && <Link className="chat-link" onClick={e => e.stopPropagation()} to={{
+            pathname: `/messages/${post.user.id}`,
+            }}>
+                <FontAwesomeIcon icon={faMessage} style={{color: "lightcoral"}}/> 
+            </Link>}
+            </p>
+            <p className={`post-expand-carrot ${isDetailed ? 'carrot-expanded' : ""}`}>></p>
+        </div>
         <h3 className='post-title'>{post.title}</h3>
         {isDetailed && 
             <div className='detailed-post'>
