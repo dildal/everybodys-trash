@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function Comment({comment, currentUser, handleEditComment, handleDeleteComment, setHideCommentForm}) {
   const [toggleEditForm, setToggleEditForm] = useState(false)
@@ -44,16 +47,14 @@ export default function Comment({comment, currentUser, handleEditComment, handle
 
   return (
     <div className='comment-container'>
-      <h4>{comment.user.username}</h4>
+      <h4>{comment.user.username} 
       {
      (currentUser && currentUser.id !== comment.user.id) &&
-        <Link to={{
-        pathname: `/messages/${comment.user.id}`,
-        state: {modal: location}
-        }}>
-          Chat
+        <Link to={`/messages/${comment.user.id}`} className="chat-link">
+          <FontAwesomeIcon icon={faMessage}/>
         </Link>
       }
+      </h4>
       {toggleEditForm ? 
       <form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="comment">

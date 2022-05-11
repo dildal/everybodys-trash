@@ -51,7 +51,7 @@ export default function BulletinBoard({currentUser}) {
      posts.length ?
       <div className='bulletin-board'>
           {postsToRender}
-          {currentUser && <Link to='/posts/new' className='button-link'>New Post</Link>}
+          {currentUser && <Link to='/posts/new' className='main-button large-button'>New Post</Link>}
       </div>
       :
       <p>LOADING...</p>

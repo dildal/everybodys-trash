@@ -43,7 +43,7 @@ export default function WishForm({currentUser, handleAddToWishlist}) {
                 onChange={(e) => setNewWish({...newWish, category: e.target.value})}
                 placeholder="Select a category"
             >
-                <option value="" disabled selected hidden>Choose cateogy...</option>
+                <option value="" disabled selected hidden>Choose category...</option>
                 <option value="furniture">Furniture</option>
                 <option value="electronics">Electronics</option>
                 <option value="clothing">Clothing</option>

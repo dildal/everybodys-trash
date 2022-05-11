@@ -89,7 +89,7 @@ export default function NewTrashForm({
         <button onClick={handleExit} className='form-close'>X</button>
         <form onSubmit={e => handleSubmit(e)}>
             <div className="input-container">
-                <label htmlFor="title">
+                <label htmlFor="title" className="light">
                     Title:
                 </label>
                 <input 
@@ -102,7 +102,7 @@ export default function NewTrashForm({
                 />
             </div>
             <div className="input-container">
-                <label htmlFor="picture">
+                <label htmlFor="picture" className="light">
                     Picture:
                 </label>
                 <input 
@@ -113,8 +113,8 @@ export default function NewTrashForm({
                     onChange={e => {setNewTrash(newTrash => ({...newTrash, picture: e.target.files[0]}))}}
                 />
             </div>
-            <div className="input-container">
-                <label htmlFor='category'>
+            <div className="input-container" >
+                <label htmlFor='category' className="light">
                     Category:
                 </label>
                 <select 
@@ -132,7 +132,7 @@ export default function NewTrashForm({
                 </select>
             </div>
             <div className="input-container" style={{flexDirection: 'row', margin: '0px 7px 0 0'}}>
-                <label htmlFor='isHeavy'>
+                <label htmlFor='isHeavy' className="light">
                     Heavy?
                 </label>
                 <input type="checkbox" 
@@ -144,7 +144,7 @@ export default function NewTrashForm({
                 />
             </div>
             <div className="input-container">
-                <label htmlFor='description'>
+                <label htmlFor='description' className="light">
                     Description
                 </label>
                 <textarea
@@ -154,8 +154,8 @@ export default function NewTrashForm({
                     onChange={(e) => setNewTrash({...newTrash, description: e.target.value})}
                 />
             </div>
-            <div className='tags-section'>
-                <label htmlFor='tags'>
+            <div className='input-container'>
+                <label htmlFor='tags' className="light">
                     Add Tag:
                 </label>
                 <input 
@@ -165,13 +165,14 @@ export default function NewTrashForm({
                     onChange={e => setNewTag(e.target.value)}
                     value={newTag}
                 />
-                <button onClick={e => handleTagAdd(e)}>Add Tag</button>
+                <button onClick={e => handleTagAdd(e)} className='main-button'>Add Tag</button>
                 <div className="tag-container">
                     {renderTags}
                 </div>              
             </div>
-            
-            <input type='submit' value='Add Trash'/>
+            <div className='input-container big-input'>
+                <input type='submit' value='Add Trash' className='main-button'/>
+            </div>
         </form>
     </div>
   )
