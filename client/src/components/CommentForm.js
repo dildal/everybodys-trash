@@ -19,14 +19,15 @@ export default function CommentForm({currentUser, post, handleAddComment}) {
           if(data.errors){
               console.log(data.errors)
           } else {
+              setNewComment({...newComment, body: ''})
               handleAddComment(data)
           }
       })
   }
   return (
-    <div>
+    <div className="comment-form">
         <form onSubmit={e => handleSubmit(e)}>
-            <label htmlFor="comment">
+            <label htmlFor="comment" style={{marginRight: '5px'}}>
                 Comment:
             </label>
             <input 
@@ -37,7 +38,7 @@ export default function CommentForm({currentUser, post, handleAddComment}) {
                 onChange={e => setNewComment({...newComment, body: e.target.value})}
                 value={newComment.body}
             />
-            <input type="submit" value="Add comment" />
+            <input type="submit" value="Add comment" className="secondary-button" style={{marginLeft: "5px"}}/>
         </form>
     </div>
   )

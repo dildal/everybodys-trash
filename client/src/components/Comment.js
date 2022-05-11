@@ -74,8 +74,8 @@ export default function Comment({comment, currentUser, handleEditComment, handle
         <p>{comment.body}</p>
         {(currentUser && currentUser.id === comment.user.id) && 
           <div className='user-controls'>
-            <button onClick={handleToggles}>Edit Comment</button>
-            <button onClick={handleDeleteClick}>Delete Comment</button>
+            <button className='secondary-button' onClick={handleToggles}>Edit Comment</button>
+            <button className='secondary-button' onClick={handleDeleteClick}>Delete Comment</button>
           </div>
         }
       </>

@@ -2,13 +2,14 @@ import React from 'react'
 
 export default function WishList({wishes}) {
   const renderWishes = wishes.map(wish => {
-       return <div className="wish-item">
+       return <li className="wish-item">
           {wish.name}
-      </div>
+      </li>
   })
   return (
     <div className='wish-list'>
-        {renderWishes}
+        <h4 className="subheader">Your Wishlist</h4>
+        <ul> {renderWishes}</ul>
     </div>
   )
 }

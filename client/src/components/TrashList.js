@@ -25,6 +25,7 @@ export default function TrashList({
     
   return (
     <div className={fromWishPage ? "wish-page-trash-list-container" : "trash-list-container"}>
+        {fromWishPage && <h4 className="subheader">Is This The Trash You Were Looking For?</h4>}
         {sortedTrashItems}
     </div>
   )
