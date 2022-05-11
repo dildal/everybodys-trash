@@ -48,14 +48,15 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
         {isDetailed && 
             <div className='detailed-post'>
                 <p className='post-body'>{post.body}</p>
+                <p className='comment-header'>Comments:</p>
                 {renderComments}
                 {(currentUser && !hideCommentForm) && <CommentForm post={post} currentUser={currentUser} handleAddComment={handleAddComment}/>}
             </div>
         }
         {isEditable && 
             <div className="user-controls">
-                <Link to={`posts/${post.id}/edit`} className='button-link'>Edit Post</Link>
-                <button className='button-link' onClick={() => handleDelete(post.id)}>Delete Post</button>
+                <Link to={`posts/${post.id}/edit`} className='main-button'>Edit Post</Link>
+                <button className='main-button' onClick={() => handleDelete(post.id)}>Delete Post</button>
             </div>
         }
     </div>

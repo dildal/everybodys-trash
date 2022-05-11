@@ -19,6 +19,38 @@ input, textarea, select {
   margin-top: 93px;
 }
 
+.main-button {
+  background: lightcoral;
+  border: white;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: white;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.secondary-button {
+  background: #694a52;
+  border: white;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: white;
+  font-size: .8rem;
+  margin-right: 10px;
+}
+
+.big-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  padding: 12px;
+  justify-content: space-around;
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -212,7 +244,7 @@ Add trash form style
   flex-direction: column;
 }
 
-form{
+.trash-form-container form{
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -227,6 +259,7 @@ form{
   flex-direction: column;
   width: 50%;
   align-self: center;
+  margin-bottom: 10px;
 }
 
 .tags-section{
@@ -344,10 +377,47 @@ Pop up styles
 Bulletin Board and Posts styles
 ======================== */
 .bulletin-post {
-  width: 80%;
-  margin: 20px auto;
+  width: 60%;
+  margin: 20px 80px;
   text-align: left;
   cursor: pointer;
+  border-bottom: 5px solid #98bfad;
+  padding-bottom: 10px;
+}
+
+.post-user{
+  text-transform: uppercase;
+  padding: 5px 0px;
+}
+
+.post-title {
+  color: #694a52;
+  margin-bottom: 5px;
+}
+
+.user-controls .main-button {
+  margin-right: 10px;
+}
+
+.comment-container{
+  padding: 10px 20px;
+  width: 40%;
+}
+
+.comment-container p {
+  padding: 6px
+}
+
+.comment-header{
+  padding: 4px;
+}
+
+.user-controls{
+  margin-left: 5px;
+}
+
+.comment-form {
+  padding: 10px 20px;
 }
 
 /* 
@@ -451,11 +521,113 @@ Tags
 Wish page
 ============================ */
 
-.wish-form{
-  flex-direction: row;
-  justify-content: center;
+.wish-main {
+  display: flex;
+  width: 80%;
+  margin: 20px auto;
+  overflow: scroll;
 }
 
+.wish-main-side.left{
+  width: 30%;
+  text-align: left;
+}
+
+.wish-form{
+  display: flex;
+  height: auto;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+input#wish {
+  width: 74%;
+  line-height: 23px;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding-left: 6px;
+}
+
+.wish-form select {
+  padding: 3px;
+  margin-top: 7px;
+  width: 74%;
+  margin-bottom: 3px;
+}
+
+.wish-form input[type="submit"]{
+  background: lightcoral;
+  border: white;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: white;
+  text-transform: uppercase;
+  width: 74%;
+}
+
+.subheader{
+  margin: 28px 0;
+  font-size: 26px;
+  color: #694a52;
+}
+
+.wish-list{
+  text-align: left;
+}
+
+.wish-page-trash-list-container {
+  width: 40%;
+}
+
+.wish-page h1 {
+  font-size: 52px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #98bfad;
+  text-shadow: 2px 1px 1px navajowhite;
+}
+
+
+.wish.trash-list-item {
+  flex-direction: column;
+  box-shadow: none;
+  border-bottom: 3px solid #98bfad;
+}
+
+.wish.trash-list-item .trash-list-item-name{
+  display: block;
+  flex-basis: 0;
+  border-right: none;
+  padding: 5px 0;
+  margin-bottom: 5px;
+}
+
+.wish.trash-list-item h3 {
+  font-weight: 600;
+  text-align: left;
+}
+
+.wish-item{
+  text-align: left;
+  padding: 6px 0;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.wish-page-side{
+  width: 34%;
+}
+
+.wish-blurb-container{
+  width: 30%;
+}
+
+.blurb {
+  padding: 10px;
+  letter-spacing: 2px;
+}
 /* 
 ==================================
 About Page

@@ -24,30 +24,33 @@ export default function WishForm({currentUser, handleAddToWishlist}) {
   }
 
   return (
-    <form className="wish-form" onSubmit={e => handleSubmit(e)}>
-        <label htmlFor="wish">
-            What are you looking for?
-        </label>
-        <input 
-            type="text"
-            id="wish"
-            onChange={e => setNewWish({...newWish, name: e.target.value})}
-            value={newWish.name}
-        />
-        <select 
-            name="category" 
-            id="category" 
-            value={newWish.category} 
-            onChange={(e) => setNewWish({...newWish, category: e.target.value})}
-            placeholder="Select a category"
-        >
-            <option value="" disabled selected hidden>Choose cateogy...</option>
-            <option value="furniture">Furniture</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="misc">Miscellaneous</option>
-        </select>
-        <input type="submit" value="Add to wishlist"/>
-    </form>
+    <>
+        <form className="wish-form" onSubmit={e => handleSubmit(e)}>
+            <h4 className='subheader'>Add Items To Your WishList</h4>
+            <label htmlFor="wish">
+                What are you looking for?
+            </label>
+            <input 
+                type="text"
+                id="wish"
+                onChange={e => setNewWish({...newWish, name: e.target.value})}
+                value={newWish.name}
+            />
+            <select 
+                name="category" 
+                id="category" 
+                value={newWish.category} 
+                onChange={(e) => setNewWish({...newWish, category: e.target.value})}
+                placeholder="Select a category"
+            >
+                <option value="" disabled selected hidden>Choose cateogy...</option>
+                <option value="furniture">Furniture</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="misc">Miscellaneous</option>
+            </select>
+            <input type="submit" value="Add to wishlist"/>
+        </form>
+    </> 
   )
 }

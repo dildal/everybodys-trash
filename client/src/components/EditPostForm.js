@@ -42,7 +42,7 @@ export default function EditPostForm() {
 
   return (
     <div>
-        <form onSubmit={e => handleSubmit(e)}>
+        <form onSubmit={e => handleSubmit(e)} className="big-form">
             <div className="input-container">
                 <label htmlFor="title">
                     Title:
@@ -68,7 +68,7 @@ export default function EditPostForm() {
                     onChange={(e) => setPost({...post, body: e.target.value})}
                 />
             </div>
-            <input type='submit' value='Submit Edit' />
+            <input type='submit' value='Submit Edit' className='main-button main-button-large'/>
         </form>
     </div>
   )
