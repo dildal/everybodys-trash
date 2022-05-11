@@ -82,9 +82,8 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
 
   function handleSubmit(e){
     e.preventDefault();
-    setMessage({...message, text: ''})
     channel.send({...message, chat_id: chatID})
-    
+    setMessage({...message, text: ''})
   }
 
   const renderMessages = messages.map(message => {
@@ -98,11 +97,12 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         (
         <div className="chat-page">
             <ChatsSideBar messageNotifications={messageNotifications} currentUser={currentUser}/>
-            <div className="chat-window">
-                
+            <div className='chat-window'>
                 <h1>Chat with {chatWith}</h1>
-                {renderMessages}
-                <form onSubmit={e => handleSubmit(e)}>
+                <div className="chat-messages">  
+                    {renderMessages}
+                </div>
+                <form className='comment-form' onSubmit={e => handleSubmit(e)}>
                     <input 
                         type="text"    
                         name="text"
@@ -111,7 +111,7 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
                         onChange={e => setMessage({...message, text: e.target.value})}
                         value={message.text}
                     />
-                    <input type='submit' value='Send' />
+                    <input type='submit' value='Send' className='main-button'/>
                 </form>
             </div>
         </div>) :

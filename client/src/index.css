@@ -476,10 +476,14 @@ Chat pop-up
   width: 90%;
   display: flex;
   margin: 10px auto;
+  height: 90%;
+  overflow: hidden;
 }
 
 .chat-sidebar{
   width: 30%;
+  overflow: scroll;
+  height: 100%;
 }
 
 .sidebar-item{
@@ -488,8 +492,15 @@ Chat pop-up
 }
 
 
+.chat-messages{
+  overflow: scroll;
+  height: 50vh;
+}
+
 .chat-window{
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-message{
@@ -545,6 +556,19 @@ Chat pop-up
 
 .chat-notification:hover{
   opacity: 1;
+}
+
+.comment-form {
+  width: 94%;
+  display: flex;
+  margin: 0 auto;
+}
+
+.comment-form input[type="text"]{
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid black;
 }
 
 

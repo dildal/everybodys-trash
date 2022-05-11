@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../images/logo.png';
 import { Link, useHistory } from 'react-router-dom';
 
-export default function Header({currentUser, setCurrentUser, mapHeader, setMessageNotifications}) {
+export default function Header({currentUser, setCurrentUser, mapHeader, setMessageNotifications, channel}) {
   const history = useHistory();
   
   function handleLogOut(){
@@ -13,6 +13,7 @@ export default function Header({currentUser, setCurrentUser, mapHeader, setMessa
     .then(res => {
         if(res.ok){
             setCurrentUser(null);
+            channel.unsubscribe();
             setMessageNotifications({})
             history.push('/');
         } else{

@@ -32,6 +32,7 @@ function App({cableApp}) {
   const [currentUser, setCurrentUser] = useState();
   const [messageNotifications, setMessageNotifications] = useState({});
   const {receiver_id} = useParams() || null;
+  const [channel, setChannel] = useState();
   
   const location = useLocation();
 
@@ -91,6 +92,8 @@ function App({cableApp}) {
         const channel = cableApp.cable.subscriptions.create({channel: "UserChannel", user: currentUser.id}, {
           received: (notification) => handleReceivedNotification(notification)
         })
+
+        setChannel(channel)
         console.log(channel.received)
         return () => channel.unsubscribe
       }
@@ -213,6 +216,7 @@ function App({cableApp}) {
         setCurrentUser={setCurrentUser} 
         mapHeader={location.pathname === '/trash'}
         setMessageNotifications={setMessageNotifications}
+        channel={channel}
       />
       <div className='main'>
         {location.pathname !== '/trash' && <Navbar currentUser={currentUser}/>}
