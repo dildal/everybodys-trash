@@ -38,7 +38,7 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
     />
   })
   return (
-    <div className={`bulletin-post ${giveClass}`} onClick={() => setDetailID((detailID) => detailID === post.id ? null : post.id)}>
+    <div className={`bulletin-post ${giveClass}`} >
         <div className='post-header'>
             <p className='post-user'>{post.user.username} 
             {(currentUser && currentUser.id !== post.user.id ) && <Link className="chat-link" onClick={e => e.stopPropagation()} to={{
@@ -47,7 +47,7 @@ export default function BulletinPost({post, isEditable, handleDelete, setDetailI
                 <FontAwesomeIcon icon={faMessage} style={{color: "lightcoral"}}/> 
             </Link>}
             </p>
-            <p className={`post-expand-carrot ${isDetailed ? 'carrot-expanded' : ""}`}>></p>
+            <p onClick={() => setDetailID((detailID) => detailID === post.id ? null : post.id)} className={`post-expand-carrot ${isDetailed ? 'carrot-expanded' : ""}`}>></p>
         </div>
         <h3 className='post-title'>{post.title}</h3>
         {isDetailed && 

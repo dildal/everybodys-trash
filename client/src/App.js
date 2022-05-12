@@ -41,7 +41,6 @@ function App({cableApp}) {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log('getting current location')
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
     })
   
@@ -65,7 +64,8 @@ function App({cableApp}) {
         .then(res => {
           if(res.ok){
             res.json().then(data => {
-              let unreads = {}
+              let unreads = {};
+              console.log(data);
               data.forEach(m => {
                 const sender_id = m.sender_id
                 if(sender_id === receiver_id){
@@ -94,7 +94,6 @@ function App({cableApp}) {
         })
 
         setChannel(channel)
-        console.log(channel.received)
         return () => channel.unsubscribe
       }
   }, [currentUser])
@@ -155,7 +154,6 @@ function App({cableApp}) {
       setOpenTrashForm(true)
     } else if(f.length){
       //not adding trash and clicked on trash pin - show popup
-      console.log('should be setting pop up info with: ', e.features[0].properties);
       e.originalEvent.stopPropagation();
       setPopupInfo(e.features[0].properties);
     } else {
@@ -188,7 +186,8 @@ function App({cableApp}) {
   }
 
   function handleReceivedNotification(notification){
-    console.log(notification);
+    console.log(`I ${currentUser.username} got a message`);
+    console.log("Notification!!!!", notification)
     if(notification.type === "message"){
       setMessageNotifications(messageNotifications => {
         const sender_id = notification.sender_id

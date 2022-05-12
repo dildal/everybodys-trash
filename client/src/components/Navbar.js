@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 export default function Navbar({currentUser}) {
   const location = useLocation();
   
-  console.log(location.pathname)
   return (
     <nav>
         <Link to="/bulletin" className='nav-link'>

@@ -34,7 +34,6 @@ export default function EditPostForm() {
           if(data.errors){
               console.log(data.errors)
           } else {
-              console.log("update success!:", data);
               history.push('/bulletin')
           }
       })
