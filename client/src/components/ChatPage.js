@@ -17,6 +17,13 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
       text: '',
   })
 
+  //set message with receiver and sender id when they exist
+  useEffect(() => {
+      if(currentUser && receiver_id){
+        setMessage({...message, receiver_id: +receiver_id, sender_id: currentUser.id})
+      }
+  }, [currentUser, receiver_id])
+
   useEffect(() => {
     if(currentUser){
         setChatID([receiver_id, currentUser.id].sort().join('_'))
@@ -24,21 +31,20 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
             const partner = currentUser.partners.find(p => {
                 return +p.id === +receiver_id
             });
-            console.log(partner)
             return partner ? partner.username : "";
         })
     }
   }, [currentUser, location])
 
   useEffect(() => {
+
     const channel = cableApp.cable.subscriptions.create({channel: "MessagesChannel"}, {
         received: (message) => handleReceivedMessage(message)
     })
-
     setChannel(channel)
+
     if(currentUser){    
         setChatID([receiver_id, currentUser.id].sort().join('_'))
-        setMessage({...message, sender_id: currentUser.id})
     }
 
     fetch(`/mark_as_read/${receiver_id}`, {
@@ -55,8 +61,9 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         } else {
             console.log("Error marking as read");
         }
-    })
-    return () => channel.unsubscribe()
+    });
+    return () => channel.unsubscribe
+
   }, [currentUser])
 
   useEffect(() => {
@@ -67,22 +74,24 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
                 if(res.ok){
                     res.json().then(data => setMessages(data))
                 }else{
-                    console.log("whoops")
+                    console.log("Error fetching chat")
                 }
             }) 
     }
   }, [chatID])
 
   function handleReceivedMessage(message){
-      console.log(message)
-      if(currentUser.id === message.receiver_id || currentUser.id === message.sender_id){
-        setMessages(messages => [...messages, message])
+      console.log(message);
+      if(currentUser){
+        if(currentUser.id === +message.receiver_id || currentUser.id === message.sender_id){
+            setMessages(messages => [...messages, message])
+          }
       }
   }
 
   function handleSubmit(e){
     e.preventDefault();
-    channel.send({...message, chat_id: chatID})
+    channel.send({...message, chat_id: chatID, sender_id: currentUser.id, receiver_id: receiver_id})
     setMessage({...message, text: ''})
   }
 
@@ -98,7 +107,7 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         <div className="chat-page">
             <ChatsSideBar messageNotifications={messageNotifications} currentUser={currentUser}/>
             <div className='chat-window'>
-                <h1>Chat with {chatWith}</h1>
+                <h1>Chat {chatWith && `with ${chatWith}`}</h1>
                 <div className="chat-messages">  
                     {renderMessages}
                 </div>

@@ -19,7 +19,7 @@ user2 = User.create({username: 'user', password: 'password', password_confirmati
 post1 = Post.create({title: "I need jars", body: "Hey y'all I'm getting married tomorrow and i need mason jars to hold the flowers on ppl's tables. I only need like 500", user: user, is_request: true})
 Post.create({title: "I need flowers", body: "Hey y'all I'm getting married tomorrow and i need flowers to put into the mason jars on ppl's tables. I only need like 10,000", user: user, is_request: true})
 Post.create({title: "I have a ton of jars", body: "Hey y'all I called off my wedding and now I have all these mason jars sitting around.  If anyone wants them they're all yours.", user: user, is_request: false})
-Post.create({title: 'Hunting for Z\'s', body: 'Looking for some z\'s anybody have some they can spare?', user: user2, is_request: true})
+Post.create({title: 'Too many cars', body: 'I accidentally ordered 10 cars when I only needed one? Does anybody want an extra one?', user: user2, is_request: true})
 
 Comment.create({body: 'I have 2 jars you can have.  Good luck with the other 498', user: user2, post: post1})
 

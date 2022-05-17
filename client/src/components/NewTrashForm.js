@@ -53,9 +53,7 @@ export default function NewTrashForm({
       const formData = new FormData();
       for( const property in newTrash){
           formData.append(property, newTrash[property]);
-          console.log(formData.keys)
       }
-      console.log(formData);
       fetch('/trashes', {
           method: 'POST',
         //   headers: { 'Content-Type': 'application/json'},
@@ -93,6 +91,7 @@ export default function NewTrashForm({
                     Title:
                 </label>
                 <input 
+                    required
                     type='text'
                     id="title"
                     placeholder='Give the trash a title, just on or two words'
@@ -106,6 +105,7 @@ export default function NewTrashForm({
                     Picture:
                 </label>
                 <input 
+                    required
                     type="file" 
                     name="picture" 
                     accept="image/png, image/gif, image/jpeg"

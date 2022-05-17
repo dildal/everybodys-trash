@@ -21,20 +21,6 @@ class MessagesController < ApplicationController
     def unread
         unread_messages = Message.where(receiver_id: params[:id], read: false).all
         message_notifications = unread_messages.map(&:message_notification)
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts "Unread messages:"
-        puts unread_messages
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
         if unread_messages
             render json: message_notifications, status: :ok
         else
