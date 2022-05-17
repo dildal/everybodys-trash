@@ -107,7 +107,7 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         <div className="chat-page">
             <ChatsSideBar messageNotifications={messageNotifications} currentUser={currentUser}/>
             <div className='chat-window'>
-                <h1>Chat with {chatWith}</h1>
+                <h1>Chat {chatWith && `with ${chatWith}`}</h1>
                 <div className="chat-messages">  
                     {renderMessages}
                 </div>
