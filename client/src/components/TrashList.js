@@ -6,7 +6,9 @@ import TrashItemDetail from './TrashItemDetail';
 export default function TrashList({
   trash,
   handleRemoveTrash,
-  fromWishPage = false
+  fromWishPage = false,
+  flyTo,
+  setPopupInfo
 }) {
     const sortedTrash = trash.sort((a,b) => a.distance - b.distance)
     const [expandedId, setExpandedId] = useState();
@@ -20,7 +22,7 @@ export default function TrashList({
           fromWishPage={fromWishPage}
           handleRemoveTrash={handleRemoveTrash}
         /> :
-         <TrashListItem key={trash.id} trash={trash} setExpandedId={setExpandedId} fromWishPage={fromWishPage}/>
+         <TrashListItem key={trash.id} trash={trash} setExpandedId={setExpandedId} fromWishPage={fromWishPage} flyTo={flyTo} setPopupInfo={setPopupInfo}/>
     })
     
   return (

@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {useEffect, useState, useCallback} from 'react';
 import Header from './components/Header';
@@ -25,16 +24,7 @@ function App({cableApp}) {
   
   const location = useLocation();
 
-
-
-
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     setCurrentLocation([position.coords.longitude, position.coords.latitude])
-  //   })
-  
-  // }, [])
-
+  //authenticate user on refresh 
   useEffect(() => {
     fetch('/auth')
       .then(res => res.json())
@@ -47,6 +37,7 @@ function App({cableApp}) {
       })
   }, [])
 
+  //fetch unread_messages and subscribe to user channel
   useEffect(() => {
     if(currentUser){
       fetch(`/unread_messages/${currentUser.id}`)
@@ -87,13 +78,7 @@ function App({cableApp}) {
       }
   }, [currentUser])
 
-  function getChatName() {
-    return messageNotifications[receiver_id].sender_name
-  }
-
   function handleReceivedNotification(notification){
-    console.log(`I ${currentUser.username} got a message`);
-    console.log("Notification!!!!", notification)
     if(notification.type === "message"){
       setMessageNotifications(messageNotifications => {
         const sender_id = notification.sender_id
