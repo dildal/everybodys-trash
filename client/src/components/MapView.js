@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { distance } from '@turf/turf';
 import Map, {Marker, Source, Layer, Popup} from 'react-map-gl';
 import NewTrashForm from './NewTrashForm'
@@ -16,6 +16,7 @@ export default function MapView() {
     const [cursor, setCursor] = useState('auto');
     const [interactiveLayerIds, setInteractiveLayerIds] = useState(['trash-data', 'road-street', 'road-primary', 'road-secondary-tertiary', 'land'])
     const [addTrash, setAddTrash] = useState(false)
+    const map = useRef(null)
 
 
   useEffect(() => {
@@ -56,6 +57,10 @@ export default function MapView() {
           'icon-image': 'green-fill-pin'
         }
       }
+
+      function flyTo(coords){
+        map.current.flyTo({center: coords, essential: true})
+      }
     
       const onMouseEnter = useCallback((e) => { 
         return addTrash ? 
@@ -79,6 +84,8 @@ export default function MapView() {
           //not adding trash and clicked on trash pin - show popup
           e.originalEvent.stopPropagation();
           setPopupInfo(e.features[0].properties);
+          map.current.flyTo({center: [e.features[0].properties.longitude, e.features[0].properties.latitude], essential: true})
+          
         } else {
           //just clicked on the map should be draggable do nothing
             setCursor('grab')
@@ -122,6 +129,7 @@ export default function MapView() {
                 />
             }
             <Map
+                ref={map}
                 initialViewState={{
                 latitude: 39.9525839,
                 longitude: -75.1652215,
@@ -168,6 +176,8 @@ export default function MapView() {
         <TrashList 
             trash={trash}
             handleRemoveTrash={handleRemoveTrash}
+            flyTo={flyTo}
+            setPopupInfo={setPopupInfo}
         /> 
     </div>
   )
