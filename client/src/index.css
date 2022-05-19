@@ -35,7 +35,7 @@ input, textarea, select {
 
 .large-button {
   display: block;
-  width: 300px;
+  max-width: 300px;
 }
 
 .secondary-button {
@@ -177,6 +177,12 @@ Header styles
   letter-spacing: 2px;
   color: lightcoral;
 
+}
+
+.map-nav {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
 }
 
 /* =================================

@@ -1,0 +1,64 @@
+@media only screen and (max-width: 800px) {
+    nav{
+        margin-bottom: 20px;
+    }
+
+    .comment-container {
+      width: 80%;
+    }
+
+    .wish-main {
+        flex-wrap: wrap;
+    }
+
+    .wish-blurb {
+        width: 100%;
+    }
+
+    .wish-page-side{
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .wish-page-trash-list-container {
+        width: 80%;
+        margin: 15px auto;
+    }
+
+    .bulletin-board {
+        width: 90%;
+    }
+
+    .bulletin-post{
+        margin: 20px 5px;
+    }
+
+
+    .input-container {
+        width: 90%;
+    }
+    .big-form input[type="submit"] {
+        width: 90%;
+    }
+
+    .map-nav {
+        justify-content: space-around;
+        width: 100%;
+        margin-top: 8px;
+        display: flex;
+        width: 100%;
+        order: 3;
+    }
+
+    .main-header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .home-page {
+        margin-top: 36px;
+    }
+
+  }
