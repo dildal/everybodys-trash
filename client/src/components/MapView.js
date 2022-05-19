@@ -4,6 +4,7 @@ import { distance } from '@turf/turf';
 import Map, {Marker, Source, Layer, Popup} from 'react-map-gl';
 import NewTrashForm from './NewTrashForm'
 import TrashList from './TrashList';
+import MapOverlayCitySelect from './MapOverlayCitySelect';
 
 
 export default function MapView() {
@@ -153,6 +154,7 @@ export default function MapView() {
                 >
                     Add Trash
                 </button>
+                {/* <MapOverlayCitySelect flyTo={flyTo}/> */}
                 <Source id="trash-data" type="geojson" data={{type: 'FeatureCollection', features: geoJSON}}>
                 <Layer {...layerStyle} />
                 {popupInfo && (

@@ -27,11 +27,16 @@ export default function Header({currentUser, setCurrentUser, mapHeader, setMessa
         <Link to='/'>
             <img src={Logo} style={{height: '72px'}} alt="Everybody's trash logo"/>
         </Link>
-            
+        <div className='map-nav'>
         {mapHeader && <Link to="/bulletin" className='big-header-link'>
             Bulletin Board
         </Link>}
         {(currentUser && mapHeader) && <Link to="/wishlist" className='big-header-link'>Wishlist</Link>}
+        </div>
+        {/* {mapHeader && <Link to="/bulletin" className='big-header-link'>
+            Bulletin Board
+        </Link>}
+        {(currentUser && mapHeader) && <Link to="/wishlist" className='big-header-link'>Wishlist</Link>} */}
         {currentUser ?
             <div className='header-right'>
                 <p>Welcome, <em>{currentUser.first_name}</em>!</p>
