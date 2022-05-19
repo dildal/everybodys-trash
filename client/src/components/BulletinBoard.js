@@ -54,6 +54,9 @@ export default function BulletinBoard({currentUser}) {
           {currentUser && <Link to='/posts/new' className='main-button large-button'>New Post</Link>}
       </div>
       :
-      <p>LOADING...</p>
+      <>
+        <p>No Posts </p>
+        {currentUser && <Link to='/posts/new' className='main-button large-button'>New Post</Link>}
+    </>
   )
 }
