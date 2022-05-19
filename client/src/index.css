@@ -28,6 +28,7 @@ input, textarea, select {
   height: 100%;
   margin-top: 93px;
   margin-bottom: 20px;
+  overflow: scroll;
 }
 
 .main-button {
