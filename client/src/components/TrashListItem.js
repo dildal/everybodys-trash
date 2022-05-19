@@ -8,7 +8,6 @@ export default function TrashListItem({trash, setExpandedId, fromWishPage, flyTo
     flyTo([longitude, latitude])
   }
   return (
-    <a href="#trash-detail">
       <div className={fromWishPage ? 'wish trash-list-item' : 'trash-list-item'} onClick={handleClick}>
           <div className='trash-list-item-name'>
               <h3>{title}</h3>
@@ -18,6 +17,5 @@ export default function TrashListItem({trash, setExpandedId, fromWishPage, flyTo
               <p className='trash-list-distance'>Distance: {distance.toFixed(2)} miles</p>
           </div>
       </div>
-    </a>
   )
 }

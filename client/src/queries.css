@@ -1,3 +1,22 @@
+@media only screen and (max-width: 1000px) {
+    .home-page {
+        position: relative;
+    }
+
+    .home-page {
+        margin-top: 36px;
+    }
+
+    .trash-list-container {
+        width: 100%;
+        background-color: white;
+    }
+
+    .trash-list-item {
+        background: #EFE0D8;;
+    }
+}
+
 @media only screen and (max-width: 800px) {
     nav{
         margin-bottom: 20px;
@@ -56,9 +75,4 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
-
-    .home-page {
-        margin-top: 36px;
-    }
-
   }
