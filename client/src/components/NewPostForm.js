@@ -10,7 +10,7 @@ export default function NewPostForm({currentUser}) {
 
   function handleSubmit(e){
       e.preventDefault();
-      fetch('/posts', {
+      fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({...post, user_id: currentUser.id})

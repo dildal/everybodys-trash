@@ -13,7 +13,7 @@ export default function WishPage({currentUser, currentLocation}) {
   }, [currentUser])
 
   useEffect(() => {
-    fetch('/trashes/wanted_by_user')
+    fetch('/api/trashes/wanted_by_user')
     .then(res => {
         if (res.ok) {
             res.json().then(data => {

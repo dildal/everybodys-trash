@@ -1,4 +1,4 @@
-class WishesController < ApplicationController
+class Api::WishesController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
     
     def create

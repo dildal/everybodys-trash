@@ -75,4 +75,21 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
+
+    .about-right {
+        width: 70%;
+    }
+    .about-left {
+        width: 70%;
+    }
+
+    .mission-statement{
+        width: 95%;
+    }
+
+    .mission-statement h4{
+        font-size: 25px;
+    }
+
+
   }

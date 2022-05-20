@@ -40,7 +40,7 @@ export default function MapView() {
 
   useEffect(() => {
 
-    fetch("/trashes")
+    fetch("/api/trashes")
       .then((r) => r.json())
       .then((data) => {
         setTrash(data.map(trash => ({...trash, distance: distance(currentLocation, [trash.longitude, trash.latitude])})));

@@ -11,7 +11,7 @@ export default function Comment({comment, currentUser, handleEditComment, handle
 
   function handleSubmit(e){
     e.preventDefault()
-    fetch(`/comments/${comment.id}`, {
+    fetch(`/api/comments/${comment.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({body: editComment.body})
@@ -29,7 +29,7 @@ export default function Comment({comment, currentUser, handleEditComment, handle
   }
 
   function handleDeleteClick(){
-    fetch(`/comments/${comment.id}`, {
+    fetch(`/api/comments/${comment.id}`, {
       method: 'DELETE'
     }).then(res => {
       if(res.ok){

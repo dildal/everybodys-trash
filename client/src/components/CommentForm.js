@@ -9,7 +9,7 @@ export default function CommentForm({currentUser, post, handleAddComment}) {
 
   function handleSubmit(e){
       e.preventDefault();
-      fetch('/comments', {
+      fetch('/api/comments', {
           method: "POST",
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify(newComment)

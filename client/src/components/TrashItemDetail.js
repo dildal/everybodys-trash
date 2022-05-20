@@ -24,7 +24,7 @@ export default function TrashItemDetail({
     }
 
     function handleDelete() {
-        fetch(`/trashes/${trash.id}`, {
+        fetch(`/api/trashes/${trash.id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json'},
         })
@@ -38,7 +38,7 @@ export default function TrashItemDetail({
 
     function handleSubmit(e){
         e.preventDefault();
-        fetch('tags', {
+        fetch('/api/tags', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify(newTag)

@@ -1,4 +1,4 @@
-class TagsController < ApplicationController
+class Api::TagsController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
     def create

@@ -9,7 +9,7 @@ export default function WishForm({currentUser, handleAddToWishlist}) {
   
   function handleSubmit(e){
     e.preventDefault();
-    fetch('/wishes', {
+    fetch('/api/wishes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({...newWish, user_id: currentUser.id})

@@ -11,7 +11,7 @@ export default function EditPostForm() {
   })
 
   useEffect(() => {
-      fetch(`/posts/${postId}`)
+      fetch(`/api/posts/${postId}`)
       .then(res => res.json())
       .then(data => {
         if(data.errors){
@@ -24,7 +24,7 @@ export default function EditPostForm() {
 
   function handleSubmit(e){
       e.preventDefault();
-      fetch(`/posts/${postId}`, {
+      fetch(`/api/posts/${postId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(post)

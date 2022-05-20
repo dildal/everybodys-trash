@@ -8,7 +8,7 @@ export default function BulletinBoard({currentUser}) {
   const [detailID, setDetailID] = useState();
 
   useEffect(() => {
-    fetch('/posts')
+    fetch('/api/posts')
       .then(res => res.json())
       .then(data => {
         if(data.errors){
@@ -20,7 +20,7 @@ export default function BulletinBoard({currentUser}) {
   }, [])
 
   function handleDelete(id){
-      fetch(`/posts/${id}`, {
+      fetch(`/api/posts/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json'}
       })

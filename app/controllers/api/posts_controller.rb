@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class Api::PostsController < ApplicationController
     skip_before_action :authorized, only: [:index, :show]
     
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid

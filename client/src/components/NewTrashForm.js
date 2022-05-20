@@ -54,7 +54,7 @@ export default function NewTrashForm({
       for( const property in newTrash){
           formData.append(property, newTrash[property]);
       }
-      fetch('/trashes', {
+      fetch('/api/trashes', {
           method: 'POST',
         //   headers: { 'Content-Type': 'application/json'},
           body: formData

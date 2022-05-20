@@ -1,4 +1,4 @@
-class MessagesController < ApplicationController
+class Api::MessagesController < ApplicationController
     skip_before_action :authorized, only: [:show]
     def create
         chat_id = [params[:sender_id].to_i, params[:receiver_id].to_i].sort.join("_")

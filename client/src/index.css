@@ -29,6 +29,7 @@ input, textarea, select {
   margin-top: 93px;
   margin-bottom: 20px;
   overflow: scroll;
+  padding-bottom: 93px;
 }
 
 .main-button {

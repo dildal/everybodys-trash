@@ -6,7 +6,7 @@ export default function Header({currentUser, setCurrentUser, mapHeader, setMessa
   const history = useHistory();
   
   function handleLogOut(){
-    fetch('/logout', {
+    fetch('/api/logout', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json'}
     })

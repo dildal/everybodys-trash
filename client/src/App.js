@@ -26,7 +26,7 @@ function App({cableApp}) {
 
   //authenticate user on refresh 
   useEffect(() => {
-    fetch('/auth')
+    fetch('/api/auth')
       .then(res => res.json())
       .then(data => {
         if(data.errors){
@@ -40,7 +40,7 @@ function App({cableApp}) {
   //fetch unread_messages and subscribe to user channel
   useEffect(() => {
     if(currentUser){
-      fetch(`/unread_messages/${currentUser.id}`)
+      fetch(`/api/unread_messages/${currentUser.id}`)
         .then(res => {
           if(res.ok){
             res.json().then(data => {
