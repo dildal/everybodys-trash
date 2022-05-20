@@ -150,6 +150,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    redis (4.6.0)
     strscan (3.0.1)
     thor (1.2.1)
     timeout (0.2.0)
@@ -172,6 +173,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.2, >= 7.0.2.3)
+  redis (~> 4.0)
   tzinfo-data
 
 RUBY VERSION
