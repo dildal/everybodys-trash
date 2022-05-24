@@ -6,7 +6,8 @@ export default function Login({setCurrentUser}) {
   const [user, setUser] = useState({
       username: '',
       password: ''
-  })
+  });
+  const [errors, setErrors] = useState()
 
   function handleSubmit(e){
     e.preventDefault(e);
@@ -18,7 +19,7 @@ export default function Login({setCurrentUser}) {
     .then(res => res.json())
     .then(data => {
         if(data.errors){
-            console.log(data.errors)
+            setErrors(data.errors)
         } else{
             setCurrentUser(data);
             history.push('/trash');
@@ -29,12 +30,14 @@ export default function Login({setCurrentUser}) {
   return (
     <div style={{width: '60%', margin: '0 auto'}}>
         <h3>Login</h3>
+        {errors && errors.map(err => <h4 className='big-error'>{err}</h4>)}
         <form className='big-form' onSubmit={e => handleSubmit(e)}>
             <div className="input-container">
                 <label htmlFor="username">
                     Username:
                 </label>
                 <input 
+                    required
                     type='text'
                     id="username"
                     placeholder='username'
@@ -48,6 +51,7 @@ export default function Login({setCurrentUser}) {
                     Password:
                 </label>
                 <input 
+                    required
                     type='password'
                     id="password"
                     placeholder='password'

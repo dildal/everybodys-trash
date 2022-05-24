@@ -11,9 +11,14 @@ export default function Signup({setCurrentUser}) {
       last_name: '',
       city: ''
   })
+  const [errors, setErrors] = useState([]);
 
   function handleSubmit(e){
     e.preventDefault();
+    if(user.password !== user.confirm_password){
+        setErrors([...errors, "Passwords don't match"])
+        return
+    }
     fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
@@ -22,7 +27,7 @@ export default function Signup({setCurrentUser}) {
     .then(res => res.json())
     .then(data => {
         if(data.errors){
-            console.log(data.errors)
+            setErrors(data.errors)
         }else {
             setCurrentUser(data);
             history.push('/');
@@ -34,12 +39,14 @@ export default function Signup({setCurrentUser}) {
   return (
     <div style={{width: '60%', margin: '0 auto'}}>
         <h3>Signup</h3>
+        {errors.length > 0 && errors.map(err => <h4 className='error'>{err}</h4>)}
         <form className='big-form' onSubmit={e => handleSubmit(e)}>
             <div className="input-container">
                 <label htmlFor="username">
                     Username:
                 </label>
-                <input 
+                <input
+                    required
                     type='text'
                     id="username"
                     placeholder='username'
@@ -53,6 +60,7 @@ export default function Signup({setCurrentUser}) {
                     Password:
                 </label>
                 <input 
+                    required
                     type='password'
                     id="password"
                     placeholder='password'
@@ -66,6 +74,7 @@ export default function Signup({setCurrentUser}) {
                     Confirm password:
                 </label>
                 <input 
+                    required
                     type='password'
                     id="confirmPassword"
                     placeholder='confirm password'
@@ -79,6 +88,7 @@ export default function Signup({setCurrentUser}) {
                     First name:
                 </label>
                 <input 
+                    required
                     type='text'
                     id="firstName"
                     placeholder='First Name'

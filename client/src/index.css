@@ -362,7 +362,6 @@ Trash Detail Card style
   width: 80%;
   margin: 0 auto 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  cursor: pointer;
 }
 
 #trash-detail header {
@@ -396,6 +395,13 @@ Trash Detail Card style
   width: 100%;
   max-height: 400px;
   padding: 0;
+}
+
+.plus-button{
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 
@@ -804,4 +810,9 @@ About Page
   top: 10px;
   left: 10px;
   z-index: 10;
+}
+
+.error{
+  width: 100%;
+  color: red;
 }

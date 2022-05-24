@@ -18,6 +18,7 @@ export default function TrashItemDetail({
         trash_id: trash.id
     });
     const [tags, setTags] = useState(trash.tags);
+    const [error, setError] = useState();
 
     const images = {
         furniture: furniturePic
@@ -38,6 +39,9 @@ export default function TrashItemDetail({
 
     function handleSubmit(e){
         e.preventDefault();
+        if(newTag.text === ""){
+            return
+        }
         fetch('/api/tags', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json'},
@@ -45,15 +49,24 @@ export default function TrashItemDetail({
         })
         .then(res => res.json())
         .then(data => {
+            if(data.errors){
+                setError("Tags must be unique")
+                fadeError();
+                return
+            }
             setTags(tags => [...tags, data]);
             setNewTag({...newTag, text: ''})
+            setToggleForm(false);
         })
-        setToggleForm(false);
     }
 
     const renderTags = tags.map(tag => {
         return <Tag tag={tag.text} key={tag.id} />
     })
+
+    const fadeError = () => {
+        return setTimeout(() => {setError("")}, 1200) 
+    }
 
     return (
         <div id="trash-detail">
@@ -67,6 +80,8 @@ export default function TrashItemDetail({
                 <div className="tag-container">
                     {renderTags}
                     {toggleForm ? 
+                        <>
+                        {error && <p className="error">{error}</p>}
                         <form style={{width: '100%', marginTop: "5px"}} onSubmit={e => (handleSubmit(e))}>
                            <label htmlFor='tags'>
                                 Add Tag:
@@ -80,8 +95,9 @@ export default function TrashItemDetail({
                             />
                             <input type='submit' value="Add tag" className='secondary-button'/>
                         </form>
+                        </>
                         :
-                        <button onClick={() => setToggleForm(true)}></button>
+                        <button className="plus-button" onClick={() => setToggleForm(true)}>+</button>
                     }
                 </div>
                 <div className="detail-icons">

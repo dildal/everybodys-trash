@@ -22,7 +22,7 @@ export default function MapView() {
     
     const map = useRef(null);
 
-
+  //get user location and set screen size state
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setCurrentLocation([position.coords.longitude, position.coords.latitude])
@@ -38,6 +38,7 @@ export default function MapView() {
   
   }, [])
 
+  //fetch trash on to populate map
   useEffect(() => {
 
     fetch("/api/trashes")
@@ -74,6 +75,7 @@ export default function MapView() {
     map.current.flyTo({center: coords, essential: true})
   }
 
+  //set cursor to grab if not hovering over trash pin
   const onMouseEnter = useCallback((e) => { 
     return addTrash ? 
       null :
