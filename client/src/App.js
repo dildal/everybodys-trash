@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState, useCallback} from 'react';
+import {useEffect, useState} from 'react';
 import Header from './components/Header';
 import { Switch, Route, Link, useParams, useLocation } from 'react-router-dom';
 import Signup from './components/Signup';
@@ -76,7 +76,7 @@ function App({cableApp}) {
         setChannel(channel)
         return () => channel.unsubscribe
       }
-  }, [currentUser])
+  }, [currentUser, receiver_id, cableApp.cable.subscriptions])
 
   function handleReceivedNotification(notification){
     if(notification.type === "message"){

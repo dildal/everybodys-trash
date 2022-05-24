@@ -4,7 +4,7 @@ import { distance } from '@turf/turf';
 import Map, {Marker, Source, Layer, Popup} from 'react-map-gl';
 import NewTrashForm from './NewTrashForm'
 import TrashList from './TrashList';
-import MapOverlayCitySelect from './MapOverlayCitySelect';
+// import MapOverlayCitySelect from './MapOverlayCitySelect';
 
 
 export default function MapView() {
@@ -79,14 +79,14 @@ export default function MapView() {
   const onMouseEnter = useCallback((e) => { 
     return addTrash ? 
       null :
-      e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']}).length ? setCursor('pointer') : setCursor('grab'), []
-  });
+      e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']}).length ? setCursor('pointer') : setCursor('grab')
+  }, [addTrash]);
 
   const onMouseLeave = useCallback(() => {
     return addTrash ? 
       null :
-      setCursor('grab'), []
-  });
+      setCursor('grab')
+  }, [addTrash]);
 
   function handleClick(e) {
     const f = e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']})
@@ -191,7 +191,7 @@ export default function MapView() {
                       <div className='popup'>
                       <h3>{popupInfo.title}</h3>
                       </div>
-                      <img width="100%" src={popupInfo.picture} />
+                      <img width="100%" alt={popupInfo.title} src={popupInfo.picture} />
                   </Popup>
                   )}
                   </Source>
@@ -272,7 +272,7 @@ export default function MapView() {
                         <div className='popup'>
                         <h3>{popupInfo.title}</h3>
                         </div>
-                        <img width="100%" src={popupInfo.picture} />
+                        <img width="100%" alt={popupInfo.title} src={popupInfo.picture} />
                     </Popup>
                     )}
                     </Source>
