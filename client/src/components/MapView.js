@@ -7,7 +7,7 @@ import TrashList from './TrashList';
 // import MapOverlayCitySelect from './MapOverlayCitySelect';
 
 
-export default function MapView() {
+export default function MapView({cableApp}) {
     const [trash, setTrash] = useState([]);
     const [openTrashForm, setOpenTrashForm] = useState(false);
     const [geoJSON, setGeoJSON] = useState([]);
@@ -19,6 +19,7 @@ export default function MapView() {
     const [addTrash, setAddTrash] = useState(false);
     const [windowWidth, setWindowWidth] = useState(0);
     const [listView, setListView] = useState(false);
+    const [channel, setChannel] = useState();
     
     const map = useRef(null);
 
@@ -37,6 +38,20 @@ export default function MapView() {
     }
   
   }, [])
+
+  // subscribe to trash channel
+  useEffect(() => {
+
+    const channel = cableApp.cable.subscriptions.create({channel: "TrashesChannel"}, {
+      received: (trash) => {
+        console.log(`received ${trash}`)
+        return handleAddTrash(trash)
+      }
+    });
+    setChannel(channel);
+
+    return () => channel.unsubscribe
+  }, [cableApp.cable.subscriptions])
 
   //fetch trash on to populate map
   useEffect(() => {
@@ -113,7 +128,8 @@ export default function MapView() {
   }
 
   function handleAddTrash(newTrash){
-    setTrash([...trash, newTrash])
+    console.log("new trash received from channel")
+    setTrash([...trash, newTrash]);
     const newGeoJSON = {
       type: "Feature",
       geometry: {
@@ -146,10 +162,10 @@ export default function MapView() {
                   {...newTrashCoords}
                   setOpenTrashForm={setOpenTrashForm}
                   currentLocation={currentLocation}
-                  handleAddTrash={handleAddTrash}
                   interactiveLayerIds={interactiveLayerIds}
                   setInteractiveLayerIds={setInteractiveLayerIds}
                   setAddTrash={setAddTrash}
+                  channel={channel}
                   />
               }
               <Map
@@ -231,6 +247,7 @@ export default function MapView() {
                     interactiveLayerIds={interactiveLayerIds}
                     setInteractiveLayerIds={setInteractiveLayerIds}
                     setAddTrash={setAddTrash}
+                    channel={channel}
                     />
                 }
                 <Map

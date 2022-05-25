@@ -137,7 +137,7 @@ function App({cableApp}) {
             <WishPage currentUser={currentUser} currentLocation={currentLocation}/>
           </Route>
           <Route  path='/trash'>
-            <MapView />
+            <MapView cableApp={cableApp}/>
           </Route>
           <Route path="/">
             <About />

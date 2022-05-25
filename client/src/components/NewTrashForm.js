@@ -11,7 +11,8 @@ export default function NewTrashForm({
     currentLocation,
     interactiveLayerIds,
     setInteractiveLayerIds,
-    handleAddTrash
+    handleAddTrash,
+    channel
 }) {
   const trashInit = {
     title: '',
@@ -53,25 +54,32 @@ export default function NewTrashForm({
       const formData = new FormData();
       for( const property in newTrash){
           formData.append(property, newTrash[property]);
+          console.log(formData)
       }
-      fetch('/api/trashes', {
-          method: 'POST',
-        //   headers: { 'Content-Type': 'application/json'},
-          body: formData
-      })
-      .then(r => r.json())
-      .then(data => {
-        if(data.errors){
-            console.log(data.errors)
-        } else{
-           const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
-           setNewTrash(trashInit);
-           handleAddTrash(createdTrash)
-           setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
-           setAddTrash(false)
-           setOpenTrashForm(false)
-        }
-      })
+      console.log(formData);
+    //   channel.send(formData);
+      setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
+      setAddTrash(false)
+      setOpenTrashForm(false)
+      setNewTrash(trashInit);
+    //   fetch('/api/trashes', {
+    //       method: 'POST',
+    //     //   headers: { 'Content-Type': 'application/json'},
+    //       body: formData
+    //   })
+    //   .then(r => r.json())
+    //   .then(data => {
+    //     if(data.errors){
+    //         console.log(data.errors)
+    //     } else{
+    //        const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
+    //        setNewTrash(trashInit);
+    //        channel.send(createdTrash);
+    //        setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
+    //        setAddTrash(false)
+    //        setOpenTrashForm(false)
+    //     }
+    //   })
   }
 
   function removeTag(tag){

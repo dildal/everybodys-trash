@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import actioncable from 'actioncable';
 
 const cableApp = {}
-cableApp.cable = actioncable.createConsumer()
+cableApp.cable = actioncable.createConsumer('ws://localhost:3000/cable')
 
 ReactDOM.render(
   <React.StrictMode>
