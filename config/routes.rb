@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :wishes, only: [:create]
+    resources :wishes, only: [:index, :create]
     resources :tags, only: [:create]
     resources :messages, only: [:index, :create, :update] do
       collection do
@@ -17,9 +17,6 @@ Rails.application.routes.draw do
     get "/auth", to: "users#show"
     delete "/logout", to: "sessions#destroy"
     get '/receiver/:id', to: "users#get_receiver"
-    # get '/unread_messages/:id', to: "messages#unread"
-    # patch '/mark_as_read/:other_guy', to: "messages#mark_as_read"
-    get '/trashes/wanted_by_user', to: "trashes#get_wanted"
   end
 
   mount ActionCable.server => '/cable'
