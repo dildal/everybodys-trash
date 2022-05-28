@@ -29,8 +29,7 @@ class Api::MessagesController < ApplicationController
 
     # change this to update
     def update
-        Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false).update_all(read: true)
-        # puts Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false)
+        Message.where(receiver_id: @current_user.id, sender_id: params[:id], read: false).update_all(read: true)
         head :no_content
     end
 
