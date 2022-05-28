@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {distance} from '@turf/turf';
 import Tag from './Tag';
+import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function NewTrashForm({
@@ -34,9 +35,9 @@ export default function NewTrashForm({
     e.preventDefault();
     e.stopPropagation();
     if(!tags.some(t => t === newTag)){
+        setNewTrash({...newTrash, tags: [...tags, newTag]});
         setTags([...tags, newTag]);
     }
-    setNewTrash(newTrash => ({...newTrash, tags}))
     setNewTag('');
   }
 
@@ -54,36 +55,32 @@ export default function NewTrashForm({
       const formData = new FormData();
       for( const property in newTrash){
           formData.append(property, newTrash[property]);
-          console.log(formData)
       }
-      console.log(formData);
-    //   channel.send(formData);
-      setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
-      setAddTrash(false)
-      setOpenTrashForm(false)
-      setNewTrash(trashInit);
-    //   fetch('/api/trashes', {
-    //       method: 'POST',
-    //     //   headers: { 'Content-Type': 'application/json'},
-    //       body: formData
-    //   })
-    //   .then(r => r.json())
-    //   .then(data => {
-    //     if(data.errors){
-    //         console.log(data.errors)
-    //     } else{
-    //        const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
-    //        setNewTrash(trashInit);
-    //        channel.send(createdTrash);
-    //        setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
-    //        setAddTrash(false)
-    //        setOpenTrashForm(false)
-    //     }
-    //   })
+
+      fetch('/api/trashes', {
+          method: 'POST',
+        //   headers: { 'Content-Type': 'application/json'},
+          body: formData
+      })
+      .then(r => r.json())
+      .then(data => {
+        if(data.errors){
+            console.log(data.errors)
+        } else{
+           const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
+           setNewTrash(trashInit);
+           console.log(createdTrash);
+           channel.send(createdTrash);
+           setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
+           setAddTrash(false)
+           setOpenTrashForm(false);
+        }
+      })
   }
 
   function removeTag(tag){
       setTags(tags.filter(t => t !== tag));
+      setNewTrash({...newTrash, tags: tags.filter(t => t !== tag)})
   }
 
   const renderTags = tags.map((tag, i) => {

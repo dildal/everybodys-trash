@@ -38,9 +38,10 @@ function App({cableApp}) {
   }, [])
 
   //fetch unread_messages and subscribe to user channel
+  //these can be different useEffects
   useEffect(() => {
     if(currentUser){
-      fetch(`/api/unread_messages/${currentUser.id}`)
+      fetch(`/api/messages/unread?id=${currentUser.id}`)
         .then(res => {
           if(res.ok){
             res.json().then(data => {

@@ -43,10 +43,7 @@ export default function MapView({cableApp}) {
   useEffect(() => {
 
     const channel = cableApp.cable.subscriptions.create({channel: "TrashesChannel"}, {
-      received: (trash) => {
-        console.log(`received ${trash}`)
-        return handleAddTrash(trash)
-      }
+      received: (trash) =>  handleAddTrash(trash)
     });
     setChannel(channel);
 

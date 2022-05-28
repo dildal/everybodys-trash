@@ -47,7 +47,7 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
         setChatID([receiver_id, currentUser.id].sort().join('_'))
     }
 
-    fetch(`/api/mark_as_read/${receiver_id}`, {
+    fetch(`/api/messages/${receiver_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json'},
     })
@@ -69,7 +69,7 @@ export default function ChatPage({currentUser, cableApp, messageNotifications, s
   useEffect(() => {
     if(currentUser){
         setChatID([receiver_id, currentUser.id].sort().join('_'))
-        fetch(`/api/messages/${chatID}`)
+        fetch(`/api/messages?chat_id=${chatID}`)
             .then(res => {
                 if(res.ok){
                     res.json().then(data => setMessages(data))

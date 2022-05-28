@@ -8,7 +8,7 @@ class MessagesChannel < ApplicationCable::Channel
     message = Message.create!({**data, read: false})
     received_user = message.receiver
     ActionCable.server.broadcast("messages_channel", MessageSerializer.new(message).as_json)
-    UserChannel.broadcast_to(received_user, message.message_notification)
+    UserChannel.broadcast_to(received_user, message.message_notification) 
   end
 
   def unsubscribed
