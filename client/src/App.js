@@ -41,7 +41,7 @@ function App({cableApp}) {
   //these can be different useEffects
   useEffect(() => {
     if(currentUser){
-      fetch(`/api/messages/unread?id=${currentUser.id}`)
+      fetch('/api/messages/unread')
         .then(res => {
           if(res.ok){
             res.json().then(data => {

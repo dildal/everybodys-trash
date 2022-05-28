@@ -1,12 +1,6 @@
 class Api::MessagesController < ApplicationController
     skip_before_action :authorized, only: [:show]
-    def create
-        chat_id = [params[:sender_id].to_i, params[:receiver_id].to_i].sort.join("_")
-        message = Message.create!({**message_params, chat_id: chat_id, read: false})
-        head :ok
-    end
 
-    # make this an index
     def index
         messages = Message.where(chat_id: params[:chat_id]).all
         if messages
@@ -16,9 +10,8 @@ class Api::MessagesController < ApplicationController
         end
     end
 
-    # make this 
     def unread
-        unread_messages = Message.where(receiver_id: params[:id], read: false).all
+        unread_messages = Message.where(receiver_id: @current_user.id, read: false).all
         message_notifications = unread_messages.map(&:message_notification)
         if unread_messages
             render json: message_notifications, status: :ok
@@ -27,7 +20,6 @@ class Api::MessagesController < ApplicationController
         end
     end
 
-    # change this to update
     def update
         Message.where(receiver_id: @current_user.id, sender_id: params[:id], read: false).update_all(read: true)
         head :no_content
