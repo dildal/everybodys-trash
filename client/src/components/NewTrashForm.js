@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {distance} from '@turf/turf';
 import Tag from './Tag';
+import { faTruckFast } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function NewTrashForm({
@@ -33,9 +34,9 @@ export default function NewTrashForm({
     e.preventDefault();
     e.stopPropagation();
     if(!tags.some(t => t === newTag)){
-        setTags([...tags, newTag]);
+        setNewTrash({...newTrash, tags: [...tags, {text: newTag}]});
+        setTags([...tags, {text: newTag}]);
     }
-    setNewTrash(newTrash => ({...newTrash, tags}))
     setNewTag('');
   }
 
@@ -52,8 +53,12 @@ export default function NewTrashForm({
       console.log(newTrash)
       const formData = new FormData();
       for( const property in newTrash){
+          if(property === 'tags'){
+              newTrash[property] = JSON.stringify( newTrash[property]);
+          }
           formData.append(property, newTrash[property]);
       }
+
       fetch('/api/trashes', {
           method: 'POST',
         //   headers: { 'Content-Type': 'application/json'},
@@ -66,20 +71,23 @@ export default function NewTrashForm({
         } else{
            const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
            setNewTrash(trashInit);
-           handleAddTrash(createdTrash)
+           handleAddTrash(createdTrash);
+        //    console.log(createdTrash);
+        //    channel.send(createdTrash);
            setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
            setAddTrash(false)
-           setOpenTrashForm(false)
+           setOpenTrashForm(false);
         }
       })
   }
 
   function removeTag(tag){
       setTags(tags.filter(t => t !== tag));
+      setNewTrash({...newTrash, tags: tags.filter(t => t !== tag)})
   }
 
   const renderTags = tags.map((tag, i) => {
-     return <Tag tag={tag} key={i} removeTag={removeTag}/>
+     return <Tag tag={tag.text} key={i} removeTag={removeTag}/>
   })
 
   return (

@@ -1,16 +1,8 @@
 class Api::MessagesController < ApplicationController
     skip_before_action :authorized, only: [:show]
-    def create
-        chat_id = [params[:sender_id].to_i, params[:receiver_id].to_i].sort.join("_")
-        message = Message.create!({**message_params, chat_id: chat_id, read: false})
-        
-        # ActionCable.server.broadcast("messages_channel_#{chat_id}", MessageSerializer.new(message).as_json)
-        ActionCable.server.broadcast("messages_channel", MessageSerializer.new(message).as_json)
-        head :ok
-    end
 
-    def show
-        messages = Message.where(chat_id: params[:id]).all
+    def index
+        messages = Message.where(chat_id: params[:chat_id]).all
         if messages
             render json: messages, status: :ok
         else
@@ -19,7 +11,7 @@ class Api::MessagesController < ApplicationController
     end
 
     def unread
-        unread_messages = Message.where(receiver_id: params[:id], read: false).all
+        unread_messages = Message.where(receiver_id: @current_user.id, read: false).all
         message_notifications = unread_messages.map(&:message_notification)
         if unread_messages
             render json: message_notifications, status: :ok
@@ -28,9 +20,8 @@ class Api::MessagesController < ApplicationController
         end
     end
 
-    def mark_as_read
-        Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false).update_all(read: true)
-        # puts Message.where(receiver_id: @current_user.id, sender_id: params[:other_guy], read: false)
+    def update
+        Message.where(receiver_id: @current_user.id, sender_id: params[:id], read: false).update_all(read: true)
         head :no_content
     end
 

@@ -1,3 +1,5 @@
+# move rescues to own base contoller
+
 class Api::TrashesController < ApplicationController
     skip_before_action :authorized, only: [:index, :create, :destroy]
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
@@ -9,7 +11,8 @@ class Api::TrashesController < ApplicationController
 
     def create
         trash = Trash.create!(trash_params)
-        params[:tags].split(',').each { |tag| Tag.create!({text: tag, trash: trash}) }
+        tags = JSON.parse params[:tags]
+        trash.create_tags(tags)
         render json: trash, status: :created
     end
 
@@ -17,18 +20,6 @@ class Api::TrashesController < ApplicationController
         trash = Trash.find(params[:id])
         trash.destroy()
         head :no_content
-    end
-
-    def get_wanted
-        trashes = []
-        @current_user.wishes.each do |wish| 
-            tags = Tag.where(text: wish.name)
-            puts tags
-            if tags.length != 0
-                tags.each{|tag| trashes.push(tag.trash)}
-            end
-        end
-        render json: trashes, status: :ok
     end
 
     private

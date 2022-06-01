@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState, useCallback} from 'react';
+import {useEffect, useState} from 'react';
 import Header from './components/Header';
 import { Switch, Route, Link, useParams, useLocation } from 'react-router-dom';
 import Signup from './components/Signup';
@@ -38,9 +38,10 @@ function App({cableApp}) {
   }, [])
 
   //fetch unread_messages and subscribe to user channel
+  //these can be different useEffects
   useEffect(() => {
     if(currentUser){
-      fetch(`/api/unread_messages/${currentUser.id}`)
+      fetch('/api/messages/unread')
         .then(res => {
           if(res.ok){
             res.json().then(data => {
@@ -76,7 +77,7 @@ function App({cableApp}) {
         setChannel(channel)
         return () => channel.unsubscribe
       }
-  }, [currentUser])
+  }, [currentUser, receiver_id, cableApp.cable.subscriptions])
 
   function handleReceivedNotification(notification){
     if(notification.type === "message"){
@@ -137,7 +138,7 @@ function App({cableApp}) {
             <WishPage currentUser={currentUser} currentLocation={currentLocation}/>
           </Route>
           <Route  path='/trash'>
-            <MapView />
+            <MapView cableApp={cableApp}/>
           </Route>
           <Route path="/">
             <About />
