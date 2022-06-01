@@ -125,7 +125,7 @@ export default function MapView({cableApp}) {
   }
 
   function handleAddTrash(newTrash){
-    console.log("new trash received from channel")
+    // console.log("new trash received from channel")
     setTrash([...trash, newTrash]);
     const newGeoJSON = {
       type: "Feature",
@@ -163,6 +163,7 @@ export default function MapView({cableApp}) {
                   setInteractiveLayerIds={setInteractiveLayerIds}
                   setAddTrash={setAddTrash}
                   channel={channel}
+                  handleAddTrash={handleAddTrash}
                   />
               }
               <Map

@@ -6,6 +6,10 @@ class Trash < ApplicationRecord
     def trash_notification
         {"id" => self.id, "type" => 'trash'}
     end
+
+    def create_tags(tags)
+        self.tags.create!(tags);
+    end
 end
 
 

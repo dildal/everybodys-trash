@@ -11,7 +11,8 @@ class Api::TrashesController < ApplicationController
 
     def create
         trash = Trash.create!(trash_params)
-        params[:tags].split(',').each { |tag| Tag.create!({text: tag, trash: trash}) }
+        tags = JSON.parse params[:tags]
+        trash.create_tags(tags)
         render json: trash, status: :created
     end
 

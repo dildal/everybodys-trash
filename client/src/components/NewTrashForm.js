@@ -12,8 +12,7 @@ export default function NewTrashForm({
     currentLocation,
     interactiveLayerIds,
     setInteractiveLayerIds,
-    handleAddTrash,
-    channel
+    handleAddTrash
 }) {
   const trashInit = {
     title: '',
@@ -35,8 +34,8 @@ export default function NewTrashForm({
     e.preventDefault();
     e.stopPropagation();
     if(!tags.some(t => t === newTag)){
-        setNewTrash({...newTrash, tags: [...tags, newTag]});
-        setTags([...tags, newTag]);
+        setNewTrash({...newTrash, tags: [...tags, {text: newTag}]});
+        setTags([...tags, {text: newTag}]);
     }
     setNewTag('');
   }
@@ -54,6 +53,9 @@ export default function NewTrashForm({
       console.log(newTrash)
       const formData = new FormData();
       for( const property in newTrash){
+          if(property === 'tags'){
+              newTrash[property] = JSON.stringify( newTrash[property]);
+          }
           formData.append(property, newTrash[property]);
       }
 
@@ -69,8 +71,9 @@ export default function NewTrashForm({
         } else{
            const createdTrash = { ...data , distance: distance(currentLocation, [data.longitude, data.latitude] )}
            setNewTrash(trashInit);
-           console.log(createdTrash);
-           channel.send(createdTrash);
+           handleAddTrash(createdTrash);
+        //    console.log(createdTrash);
+        //    channel.send(createdTrash);
            setInteractiveLayerIds([...interactiveLayerIds, 'trash-data'])
            setAddTrash(false)
            setOpenTrashForm(false);
@@ -84,7 +87,7 @@ export default function NewTrashForm({
   }
 
   const renderTags = tags.map((tag, i) => {
-     return <Tag tag={tag} key={i} removeTag={removeTag}/>
+     return <Tag tag={tag.text} key={i} removeTag={removeTag}/>
   })
 
   return (
