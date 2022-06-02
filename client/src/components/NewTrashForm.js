@@ -26,10 +26,10 @@ export default function NewTrashForm({
   }
 
   const [newTrash, setNewTrash] = useState(trashInit);
-
   const [newTag, setNewTag] = useState('');
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState([]);
 
+  //add tag to tag array in state and newtrash object's tags
   function handleTagAdd(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -40,6 +40,7 @@ export default function NewTrashForm({
     setNewTag('');
   }
 
+  //close form popup and reset form and pointer   
   function handleExit() {
       setInteractiveLayerIds([...interactiveLayerIds, 'trash-data']);
       setNewTrash(trashInit);
@@ -48,6 +49,8 @@ export default function NewTrashForm({
   }
   
 
+  // convert new trash to formData object so we can post image file
+  // post new trash to data base
   function handleSubmit(e){
       e.preventDefault();
       console.log(newTrash)

@@ -4,7 +4,6 @@ import { distance } from '@turf/turf';
 import Map, {Marker, Source, Layer, Popup} from 'react-map-gl';
 import NewTrashForm from './NewTrashForm'
 import TrashList from './TrashList';
-// import MapOverlayCitySelect from './MapOverlayCitySelect';
 
 
 export default function MapView({cableApp}) {
@@ -73,7 +72,8 @@ export default function MapView({cableApp}) {
         }))
       });
   }, [currentLocation]);
-    
+
+  //create layer style for the layerof trash pins  
   const layerStyle = {
     id: 'trash-data', 
     type: 'symbol',
@@ -83,6 +83,7 @@ export default function MapView({cableApp}) {
     }
   }
 
+  //fly to spot on map for list clicks
   function flyTo(coords){
     map.current.flyTo({center: coords, essential: true})
   }
@@ -94,6 +95,7 @@ export default function MapView({cableApp}) {
       e.target.queryRenderedFeatures(e.point, { layers: ['trash-data']}).length ? setCursor('pointer') : setCursor('grab')
   }, [addTrash]);
 
+  //reset cursor
   const onMouseLeave = useCallback(() => {
     return addTrash ? 
       null :
@@ -119,13 +121,15 @@ export default function MapView({cableApp}) {
     }
   }
 
+  //remove trash from state
   function handleRemoveTrash(id){
     setGeoJSON(geoJSON.filter(gj => gj.id !== id));
     setTrash(trash.filter(trash => trash.id !== id));
+    setPopupInfo(null);
   }
 
+  //use object passed in from form component add it to state and turn it into a geoJSON object for the map
   function handleAddTrash(newTrash){
-    // console.log("new trash received from channel")
     setTrash([...trash, newTrash]);
     const newGeoJSON = {
       type: "Feature",
@@ -142,6 +146,7 @@ export default function MapView({cableApp}) {
     setGeoJSON([...geoJSON, newGeoJSON])
   }
 
+  //for media breaks
   function updateDimensions() {
     const width = window.innerWidth;
     setWindowWidth(width);
